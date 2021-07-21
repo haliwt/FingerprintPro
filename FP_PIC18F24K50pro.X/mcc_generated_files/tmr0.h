@@ -53,6 +53,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "led.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -367,6 +368,14 @@ extern void (*TMR0_InterruptHandler)(void);
     None
 */
 void TMR0_DefaultInterruptHandler(void);
+
+
+void InTMR0_CheckBattery_ADCValue(void);
+
+
+
+
+
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

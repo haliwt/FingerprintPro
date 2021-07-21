@@ -35,7 +35,6 @@ static void LEDDispalayBattery_Power(battery_id batid)
 		 	
 			LED_40_SetHigh() ;
 			LED_60_SetHigh();
-		 
 		    LED_80_SetLow();
 			LED_100_SetLow();
 

@@ -51,7 +51,14 @@
 #include <xc.h>
 #include "tmr0.h"
 
-
+/****************************************************************************
+	*
+	*
+	*
+	*
+	*
+	*
+****************************************************************************/
 /**
   Section: TMR0 APIs
 */
@@ -132,6 +139,7 @@ void TMR0_ISR(void)
 void TMR0_CallBack(void)
 {
     // Add your custom callback code here
+      TMR0_InterruptHandler=InTMR0_CheckBattery_ADCValue;
 
     if(TMR0_InterruptHandler)
     {
@@ -146,6 +154,26 @@ void TMR0_SetInterruptHandler(void (* InterruptHandler)(void)){
 void TMR0_DefaultInterruptHandler(void){
     // add your TMR0 interrupt custom code
     // or set custom function using TMR0_SetInterruptHandler()
+}
+/**********************************************************************
+	*
+	*Function Name:void InTMR0_CheckBattery_ADCValue(void)
+	*Function :every interval 4s be check battery ADC 
+	*          4ms interrupt onece
+	*
+	*
+	*
+**********************************************************************/
+void InTMR0_CheckBattery_ADCValue(void)
+{
+     static uint16_t times;
+	 times++;
+	 if(times>999){
+        times =0;
+		DisplayBattery_Power_Estimate();
+     }
+
+
 }
 
 /**
