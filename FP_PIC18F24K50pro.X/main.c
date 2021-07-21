@@ -43,11 +43,13 @@
 
 #include "mcc_generated_files/mcc.h"
 
+
 /*
                          Main application
  */
 void main(void)
 {
+	 uint8_t keyValue;
     // Initialize the device
     SYSTEM_Initialize();
 
@@ -70,6 +72,10 @@ void main(void)
     while (1)
     {
         // Add your application code
+        keyValue=  KEY_Scan();
+		checkMode(keyValue);
+		checkRun();
+        
     }
 }
 /**

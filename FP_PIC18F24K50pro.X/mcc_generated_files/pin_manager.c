@@ -62,10 +62,10 @@ void PIN_MANAGER_Initialize(void)
     LATC = 0x00;
 
     /**
-    TRISx registers dirtction 
+    TRISx registers dirtction : 0->output ;1->input Port
     */
-    TRISA = 0x3F;
-    TRISB = 0xC5;
+    TRISA = 0x3F;  //0b 0011 1111 
+    TRISB = 0xC5;  //0b 1100 0101
     TRISC = 0x8C;
 
     /**

@@ -58,6 +58,9 @@
 #include "tmr2.h"
 #include "tmr0.h"
 #include "eusart.h"
+#include "key.h"
+#include "led.h"
+#include "headlamp.h"
 
 
 

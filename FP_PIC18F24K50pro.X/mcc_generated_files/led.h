@@ -31,7 +31,7 @@ typedef enum{
 
 }battery_id;
 	
-void DisplaylayBattery_Power_Estimate(void);
-//void DispalayBattery_Power(battery_id batid);
+void DisplayBattery_Power_Estimate(void);
+
 
 #endif 

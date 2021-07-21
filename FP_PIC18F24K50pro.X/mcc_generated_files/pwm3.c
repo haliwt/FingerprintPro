@@ -50,7 +50,15 @@
 
  #include <xc.h>
  #include "pwm3.h"
-
+ 
+/**********************************************************************************
+	* 
+    *PWM of Duty formula = (pwm of duty Cycle)/(prescale * Tosc) *100%
+    *   pwm3 of pwerid is Timer2 period =0.1ms , Timer2 prescale =1
+    *   100% Duty = (0.1ms)/(1*0.125*10^-3)=800-1=799 
+    *   50%  Duty = 800*50%=800/2=400-1=399
+	*
+**********************************************************************************/
  /**
    Section: PWM Module APIs
  */
@@ -61,20 +69,30 @@
     // PWM3POL active_hi; PWM3EN enabled; 
     PWM3CON = 0x80;   
 
-    // DC 124; 
-    PWM3DCH = 0x7C;   
+    // DC 99; PWM3DH[7:0]
+    PWM3DCH = 0x63;  //399=0X18F>>2 ->0X63 
 
-    // DC 3; 
-    PWM3DCL = 0xC0;   
+    // DC 3; PWM3DL[7:6]
+    PWM3DCL = 0xC0;  //0B1100 0000 
 
     // Select timer
     CCPTMRSbits.P3TSEL = 1;
  }
-
- void PWM3_LoadDutyValue(uint16_t dutyValue)
+/**********************************************************************************
+	 * 
+	 *Function Name:void PWM3_LoadDutyValue(uint16_t dutyValue)
+	 *PWM of Duty formula = (pwm of duty Cycle )/(prescale * Tosc) *100%
+	 *	 pwm3 of pwerid is Timer2 period =0.1ms , Timer2 prescale =1
+	 *	 100% Duty = (0.1ms)/(1*0.125*10^-3)=800-1=799 
+	 *	 50%  Duty = 800*50%=800/2=400-1=399
+	 *   40%  Duty = 800 *40% =320= 320-1=319
+	 *
+**********************************************************************************/
+void PWM3_LoadDutyValue(uint16_t dutyValue)
  {
+
      // Writing to 8 MSBs of PWM duty cycle in PWMDCH register
-     PWM3DCH = (dutyValue & 0x03FC)>>2;
+     PWM3DCH = (dutyValue  & 0x03FC)>>2;
      
      // Writing to 2 LSBs of PWM duty cycle in PWMDCL register
      PWM3DCL = (dutyValue & 0x0003)<<6;

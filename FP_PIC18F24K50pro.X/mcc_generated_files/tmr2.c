@@ -55,10 +55,18 @@
   Section: Global Variables Definitions
 */
 
+
+/*******************************************************************************************
+	*
+	*Function Name:void TMR2_Initialize(void)
+	*Function: Timer PR2 :prescale = 1,Timer2 period = 0.1ms .Tosc =1/8Mhz =0.125us
+	*          PR2 = (T2 period)/(4*prescale*Tosc)= 0.1/(4*1*0.125*10^-3)=200-1=199=0xC7
+	*
+	*
+*******************************************************************************************/
 /**
   Section: TMR2 APIs
 */
-
 void TMR2_Initialize(void)
 {
     // Set TMR2 to the options selected in the User Interface
@@ -72,8 +80,8 @@ void TMR2_Initialize(void)
     // T2RSEL T2CKIPPS pin; 
     T2RST = 0x00;
 
-    // PR2 249; 
-    T2PR = 0xF9;
+    // PR2 199; 
+    T2PR = 0xC7;
 
     // TMR2 0; 
     T2TMR = 0x00;
@@ -81,8 +89,8 @@ void TMR2_Initialize(void)
     // Clearing IF flag.
     PIR4bits.TMR2IF = 0;
 
-    // T2CKPS 1:8; T2OUTPS 1:1; TMR2ON on; 
-    T2CON = 0xB0;
+    // T2CKPS 1:1; T2OUTPS 1:1; TMR2ON on; 
+    T2CON = 0x80;
 }
 
 void TMR2_ModeSet(TMR2_HLT_MODE mode)

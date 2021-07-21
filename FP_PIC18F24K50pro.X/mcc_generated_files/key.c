@@ -81,22 +81,22 @@ uint8_t  KEY_Scan(void)
 	
     cnt =0;
     if(k1==190){
-       cnt= 0x1  ;  
+       cnt= 0x1  ;  //KEY_RED
     } 
     if(k2==190){
-        cnt= 0x2  ;  
+        cnt= 0x2  ; //KEY_GREEN 
     }
     if(k3==190){
-        cnt= 0x4  ;  
+        cnt= 0x4  ;  //KEY_BLUE 
     }
     if(k4==190){
-        cnt= 0x8  ;  
+        cnt= 0x8  ;  //KEY_WHITE
     }
     if(k5==190){
-        cnt= 0x9  ;  
+        cnt= 0x10 ;   //KEY_ADD
     }
 	if(k6==190){
-	  cnt =0x20;
+	  cnt =0x20;      //KEY_SUB
 	}
     return cnt ;
     

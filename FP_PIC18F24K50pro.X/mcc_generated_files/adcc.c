@@ -101,8 +101,8 @@ void ADCC_Initialize(void)
     ADCLK = 0x00;
     // ADGO stop; ADFM right; ADON enabled; ADCONT enabled; ADCS FOSC/ADCLK; 
     ADCON0 = 0xC4;
-    // ADACQ 0; 
-    ADACQ = 0x00;
+    // ADACQ 200; 
+    ADACQ = 0xC8;
     
 
 }
@@ -331,7 +331,7 @@ void BATTERY_ADCValue(void)
 {
 	uint16_t vim;
 	vim = ADCC_GetConversionResult();
-	adc_t.adcValue = (vim * 8400)>>10; // (vim*8400)/1024
+	adc_t.adcValue = (vim * 5000)>>10; // (vim*5000)/1024
 
 }
 
