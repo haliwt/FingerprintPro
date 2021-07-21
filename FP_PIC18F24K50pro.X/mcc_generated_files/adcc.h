@@ -92,6 +92,17 @@ typedef enum
     channel_FVR_buf1 =  0x3F
 } adcc_channel_t;
 
+
+typedef struct{
+
+    uint16_t adcValue;
+	
+
+}ADC_t;
+
+extern ADC_t adc_t;
+
+
 /**
   Section: ADCC Module APIs
 */
@@ -824,6 +835,7 @@ bool ADCC_HasErrorCrossedLowerThreshold(void);
 uint8_t ADCC_GetConversionStageStatus(void);
 
 
+void BATTERY_ADCValue(void);
 
 
 #ifdef __cplusplus  // Provide C++ Compatibility

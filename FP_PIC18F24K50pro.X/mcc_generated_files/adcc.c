@@ -51,6 +51,9 @@
 #include <xc.h>
 #include "adcc.h"
 
+ADC_t adc_t;
+
+
 /**
   Section: ADCC Module Variables
 */
@@ -84,8 +87,8 @@ void ADCC_Initialize(void)
     ADPRE = 0x00;
     // ADDSEN disabled; ADGPOL digital_low; ADIPEN disabled; ADPPOL VSS; 
     ADCON1 = 0x00;
-    // ADCRS 0; ADMD Basic_mode; ADACLR disabled; ADPSIS ADRES; 
-    ADCON2 = 0x00;
+    // ADCRS 0; ADMD Average_mode; ADACLR disabled; ADPSIS ADRES; 
+    ADCON2 = 0x02;
     // ADCALC First derivative of Single measurement; ADTMD disabled; ADSOI ADGO not cleared; 
     ADCON3 = 0x00;
     // ADAOV ACC or ADERR not Overflowed; 
@@ -103,7 +106,14 @@ void ADCC_Initialize(void)
     
 
 }
-
+/*******************************************************************************************
+	*
+	*Function Name:void ADCC_StartConversion(adcc_channel_t channel)
+	*Function: 
+	*Input Ref:input which Analog channel "PORTx"
+	*Return Ref:NO
+	*
+*******************************************************************************************/
 void ADCC_StartConversion(adcc_channel_t channel)
 {
     // select the A/D channel
@@ -122,6 +132,14 @@ bool ADCC_IsConversionDone(void)
     return ((unsigned char)(!ADCON0bits.ADGO));
 }
 
+/*******************************************************************************************
+	*
+	*Function Name:adc_result_t ADCC_GetConversionResult(void)
+	*Function: 
+	*Input Ref:NO
+	*Return Ref: ADC of value
+	*
+*******************************************************************************************/
 adc_result_t ADCC_GetConversionResult(void)
 {
     // Return the result
@@ -152,7 +170,14 @@ adc_result_t ADCC_GetSingleConversion(adcc_channel_t channel)
     // Conversion finished, return the result
     return ((adc_result_t)((ADRESH << 8) + ADRESL));
 }
-
+/*******************************************************************************************
+	*
+	*Function Name:void ADCC_StopConversion(void)
+	*Function: 
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+*******************************************************************************************/
 void ADCC_StopConversion(void)
 {
     //Reset the ADGO bit.
@@ -161,19 +186,19 @@ void ADCC_StopConversion(void)
 
 void ADCC_SetStopOnInterrupt(void)
 {
-    //Set the ADSOI bit.
+    //Set the ADSOI bit.ADC stop on interrupt bit
     ADCON3bits.ADSOI = 1;
 }
 
 void ADCC_DischargeSampleCapacitor(void)
 {
-    //Set the ADC channel to AVss.
+    //Set the ADC channel to AVss. -ADC Positive Channel Seletction Register
     ADPCH = 0x3c;   
 }
 
 void ADCC_LoadAcquisitionRegister(uint8_t acquisitionValue)
 {
-    //Load the ADACQ register.
+    //Load the ADACQ register.//采样时间
     ADACQ = acquisitionValue;   
 }
 
@@ -200,7 +225,14 @@ void ADCC_ClearAccumulator(void)
     //Reset the ADCON2bits.ADACLR bit.
     ADCON2bits.ADACLR = 1;
 }
-
+/*******************************************************************************************
+	*
+	*Function Name:uint16_t ADCC_GetAccumulatorValue(void)
+	*Function: Accumulator for battery charge
+	*
+	*
+	*
+*******************************************************************************************/
 uint16_t ADCC_GetAccumulatorValue(void)
 {
     //Return the contents of ADACCH and ADACCL registers
@@ -287,7 +319,21 @@ uint8_t ADCC_GetConversionStageStatus(void)
     //Returns the contents of ADSTATbits.ADSTAT field.
     return ADSTATbits.ADSTAT;
 }
+/*****************************************************************************
+	*
+	*Function Name:void BATTERY_ADCValue(void)
+	*Function :
+	*
+	*
+	*
+*****************************************************************************/
+void BATTERY_ADCValue(void)
+{
+	uint16_t vim;
+	vim = ADCC_GetConversionResult();
+	adc_t.adcValue = (vim * 8400)>>10; // (vim*8400)/1024
 
+}
 
 /**
  End of File

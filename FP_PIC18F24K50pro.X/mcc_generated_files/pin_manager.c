@@ -62,11 +62,11 @@ void PIN_MANAGER_Initialize(void)
     LATC = 0x00;
 
     /**
-    TRISx registers
+    TRISx registers dirtction 
     */
     TRISA = 0x3F;
     TRISB = 0xC5;
-    TRISC = 0x8D;
+    TRISC = 0x8C;
 
     /**
     ANSELx registers
@@ -98,9 +98,9 @@ void PIN_MANAGER_Initialize(void)
     SLRCONC = 0xFF;
 
     /**
-    INLVLx registers
+    INLVLx registers input level select
     */
-    INLVLA = 0xFF;
+    INLVLA = 0xFF; //0B1111 1111 : 1 ->ST(schmitt trigger Vh Vl)  ;0->TTL level(0~5v)
     INLVLB = 0xFF;
     INLVLC = 0xFF;
     INLVLE = 0x08;
