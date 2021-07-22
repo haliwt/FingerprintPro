@@ -27,16 +27,23 @@
 typedef struct {
 
    uint8_t lampColor;
-   uint8_t lampRed_flag;
-   uint8_t lampGreen_flag;
-   uint8_t lampBlue_flag;
-   uint8_t lampWhite_flag;
-   uint8_t lampLight_flag; //0x01 add sub is 0x20;
+   uint8_t lampWhichColor_ON_flag;
+  
    
    
 }LAMP_T;
 
 LAMP_T lamp_t;
+
+typedef enum{
+
+    noColor,
+	Red,
+	Green,
+	Blue,
+	White
+
+}Color;
 
 void checkMode(uint8_t value);
 void checkRun(void);

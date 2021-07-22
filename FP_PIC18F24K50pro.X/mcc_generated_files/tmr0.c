@@ -52,10 +52,10 @@
 #include "tmr0.h"
 
 /****************************************************************************
-	*
-	*
-	*
-	*
+	*Timer0 is 8bit timer,prescale =32,Tosc=1/8=0.125us,Time period =4ms
+	*Timer 0 of Time period= (4*Tosc)*prescale*((255+1) - TMR0L) ,
+	*      TMR0L= 256-(Tperiod)/(4*Tosc*prescale)=256-4ms/(4*0.125*32*10^-3)=256-250=6;
+	*定时器0，初值需要装入6-> 定时器需要256-6 - 1=250-1=249
 	*
 	*
 ****************************************************************************/
@@ -84,11 +84,11 @@ void TMR0_Initialize(void)
     // Enabling TMR0 interrupt.
     PIE0bits.TMR0IE = 1;
 
-    // Set Default Interrupt Handler
+    // Set Default Interrupt Handler 
     TMR0_SetInterruptHandler(TMR0_DefaultInterruptHandler);
 
     // T0OUTPS 1:1; T0EN enabled; T016BIT 8-bit; 
-    T0CON0 = 0x80;
+    T0CON0 = 0x80; //0b 1000 0000 
 }
 
 void TMR0_StartTimer(void)
@@ -113,12 +113,20 @@ uint8_t TMR0_ReadTimer(void)
     return readVal;
 }
 
+
 void TMR0_WriteTimer(uint8_t timerVal)
 {
     // Write to Timer0 registers, low register only
     TMR0L = timerVal;
  }
 
+/*****************************************************************
+	*
+	*Function Name:void TMR0_Reload(uint8_t periodVal)
+	*Function: Timer0 peirod times value
+	*
+	*
+******************************************************************/
 void TMR0_Reload(uint8_t periodVal)
 {
    // Write to Timer0 registers, high register only
@@ -135,7 +143,13 @@ void TMR0_ISR(void)
 
     // add your TMR0 interrupt custom code
 }
-
+/***********************************************************************
+	*
+	*Function Name:void TMR0_CallBack(void)
+	*Function:call back function
+	*
+	*
+************************************************************************/
 void TMR0_CallBack(void)
 {
     // Add your custom callback code here
@@ -159,7 +173,7 @@ void TMR0_DefaultInterruptHandler(void){
 	*
 	*Function Name:void InTMR0_CheckBattery_ADCValue(void)
 	*Function :every interval 4s be check battery ADC 
-	*          4ms interrupt onece
+	*          4ms Timer0 interrupt times
 	*
 	*
 	*

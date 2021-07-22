@@ -3,49 +3,79 @@
 //LAMP_T lamp_t;
 
 static void KEY_ADDandSUB_Function(void);
+static void WhichColor_ON(void);
 
-
-/**************************************************************
+/***************************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
-	*Function: 
+	*Function: The first input LED ON,the second input key LED OFF
 	*Input Ref:key be pressed of value
 	*Return Ref:NO
 	*
-**************************************************************/
+****************************************************************************/
 void checkMode(uint8_t keyvalue)
 {
-    switch(keyvalue){
+
+    static uint8_t inputKey_red,inputKey_green,inputKey_blue,inputKey_white;
+	switch(keyvalue){
 
      
       case 0:
 	  	   lamp_t.lampColor=0;
-		   lamp_t.lampBlue_flag =0;
-	       lamp_t.lampRed_flag=0;
-   		   lamp_t.lampGreen_flag=0;
-		   lamp_t.lampWhite_flag=0;
-		   lamp_t.lampLight_flag=0;
+	       lamp_t.lampWhichColor_ON_flag=noColor;
+		 
 		 
 	   break;
    
 	   case 0x1: //KEY_RED
-		     
-   		   lamp_t.lampColor = 0x01;
+	        inputKey_red = inputKey_red ^ 0x01;
+			if(inputKey_red ==1){
+		        lamp_t.lampColor = 0x01;
+				inputKey_blue =0;
+			    inputKey_green=0;
+				inputKey_white=0;
+			}
+			else 
+				lamp_t.lampColor=0;
    
 	   break;
    
 	   case 0x02: //KEY_GREEN
-		  lamp_t.lampColor = 0x02;
+	      inputKey_green = inputKey_green ^ 0x01;
+		  if(inputKey_green ==1){
+		       lamp_t.lampColor = 0x02;
+			  inputKey_red=0;
+	          inputKey_blue =0;
+			  inputKey_white=0;
+		  }
+		  else
+		  	 lamp_t.lampColor=0;
    
 	   break;
    
 	   case 0x04://KEY_BLUE
-		  lamp_t.lampColor = 0x04;
+	      inputKey_blue = inputKey_blue ^ 0X01;
+		  if(inputKey_blue ==1){
+		  	lamp_t.lampColor = 0x04;
+			 inputKey_red=0;
+	         inputKey_green =0;
+			 inputKey_white=0;
+		  }
+		  else
+		  	 lamp_t.lampColor=0;
    
 	   break;
    
 	   case 0x08://KEY_WHITE
-		   lamp_t.lampColor = 0x08;
+	       inputKey_white = inputKey_white ^ 0x01;
+		   if(inputKey_white==1){
+		        lamp_t.lampColor = 0x08;
+			 	inputKey_red=0;
+             	inputKey_blue =0;
+		  		inputKey_green=0;
+		   }
+		   else
+		   	 lamp_t.lampColor=0;
    
 	   break;
    
@@ -99,61 +129,67 @@ void checkRun(void)
 
 		LAMP_RED_OFF();
 		
+		lamp_t.lampWhichColor_ON_flag = noColor;
     break;
 
     case 0x01: //KEY_RED
+        lamp_t.lampWhichColor_ON_flag = Red;
         LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
 
 		LAMP_RED_ON();
-		lamp_t.lampRed_flag =1;
-
-
+		
 	break;
 
 	case 0x02: //KEY_GREEN
+	    lamp_t.lampWhichColor_ON_flag = Green;
         LAMP_RED_OFF();
 	    LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
 
 		 LAMP_GREEN_ON();
-		 lamp_t.lampGreen_flag=1;
+		
 
 	break;
 
 	case 0x04://KEY_BLUE
+	    lamp_t.lampWhichColor_ON_flag = Blue;
 	    LAMP_GREEN_OFF();
 		LAMP_RED_OFF();
 	    LAMP_WHITE_OFF();
 
 		LAMP_BLUE_ON();
-		lamp_t.lampBlue_flag=1;
+		
 
 	break;
 
 	case 0x08://KEY_WHITE
+	    lamp_t.lampWhichColor_ON_flag = White;
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
     	LAMP_RED_OFF();
 		
 		LAMP_WHITE_ON();
-		lamp_t.lampWhite_flag=1;
+		
+        
 
 	break;
 
 
 	case 0x10: //KEY_ADD "+"
-	       lamp_t.lampLight_flag=0x01;
+	     
+	     
 		   KEY_ADDandSUB_Function();
+		   WhichColor_ON();
 		  
 
 	break;
 
 	case 0x20: //KEY_SUB "-"
-          lamp_t.lampLight_flag=0x10;
+         
 		  KEY_ADDandSUB_Function();
-		
+		  WhichColor_ON();
 
 	break;
 
@@ -177,7 +213,7 @@ void checkRun(void)
 static void KEY_ADDandSUB_Function(void)
 {
      static uint16_t tempDuty;
-	 if(lamp_t.lampLight_flag==0x01){//"+"
+	 if(lamp_t.lampColor == 0x10 ){//"+"
 	 	
 	 	 tempDuty += DUTY_STEP_LEVEL;
 		 if(tempDuty >=DUTY_MAX_LEVE)tempDuty = DUTY_MAX_LEVE;
@@ -187,7 +223,7 @@ static void KEY_ADDandSUB_Function(void)
 
     }
 
-	if(lamp_t.lampLight_flag = 0x10){  //"-"
+	if(lamp_t.lampColor == 0x20){  //"-"
 
 		 if(tempDuty < DUTY_MIN_LEVEL){
 		 	
@@ -200,9 +236,57 @@ static void KEY_ADDandSUB_Function(void)
         PWM3_LoadDutyValue(tempDuty);
     }
 	
+}
+
+/***************************************************************************************
+	*
+	*Function Name:static void WhichColor_ON(void)
+	*
+	*
+	*
+	*
+***************************************************************************************/
+static void WhichColor_ON(void)
+{
+	switch(lamp_t.lampWhichColor_ON_flag){
+
+	case noColor:
+        LAMP_GREEN_OFF();
+	    LAMP_BLUE_OFF();
+		LAMP_WHITE_OFF();
+
+		LAMP_RED_OFF();
 
 
+	break;
+
+	case Red:
+
+			LAMP_RED_ON();
+    break;
+
+	case Green:
+			 LAMP_GREEN_ON();
+	break;
+
+	case Blue:
+			LAMP_BLUE_ON();
+
+	break;
+
+
+	case White:
+		   LAMP_WHITE_ON();
+
+	break;
+
+	default:
+
+	break;
+
+    }
 
 
 }
+
 
