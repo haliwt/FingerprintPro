@@ -1,10 +1,8 @@
 #include "headlamp.h"
 #include "tmr2.h"
 
-//LAMP_T lamp_t;
+
 static uint8_t currLamp;
-static void KEY_ADDandSUB_Function(void);
-static void WhichColor_ON(void);
 /***************************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
@@ -37,7 +35,8 @@ void LAMP_Init_Value(void)
 void checkMode(uint8_t keyvalue)
 {
 
-    static uint8_t inputKey_red=0,inputKey_green,inputKey_blue,inputKey_white;
+    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff;
+	uint8_t lock=0,lock_k=0;
 	switch(keyvalue){
        case 0:
 
@@ -48,73 +47,65 @@ void checkMode(uint8_t keyvalue)
 	   break;
    
 	   case 0x1: //KEY_RED
-            inputKey_red++;
-			if(inputKey_red==1) lamp_t.lampColor = 0x01;
-			else{
-				inputKey_red=0;
-				lamp_t.lampColor=0;
-				TX1REG = 0x01;
+         
+		  if(inputKey_red !=lamp_t.lampColor && lock_k!=2){
+			   lamp_t.lampColor = 0x01;
+			   inputKey_red = lamp_t.lampColor;
+		       lock =1;
 			}
-
-
-	        // inputKey_red = inputKey_red ^ 0x01;
-			// if(inputKey_red ==1){
-		    //     lamp_t.lampColor = 0x01;
-			// 	inputKey_blue =0;
-			//     inputKey_green=0;
-			// 	inputKey_white=0;
-			// }
-			// else if(){
-			// 	TX1REG = 0x01;
-			// 	lamp_t.lampColor=0;
-			// }
+			else if(lock !=1) {
+				TX1REG = 0x01;
+				lamp_t.lampColor=0;
+				lamp_t.zeroflag=0;
+				lock_k=2;
+			}
    
 	   break;
    
 	   case 0x02: //KEY_GREEN
-	      inputKey_green = inputKey_green ^ 0x01;
-		  if(inputKey_green ==1){
-		       lamp_t.lampColor = 0x02;
-			  inputKey_red=0;
-	          inputKey_blue =0;
-			  inputKey_white=0;
-		  }
-		  else{
-			  TX1REG = 0x02;
-		  	   lamp_t.lampColor=0;
-				
+	     
+		  if(inputKey_green !=lamp_t.lampColor && lock_k!=2){
+			  lamp_t.lampColor = 0x02;
+			  inputKey_green = lamp_t.lampColor;
+		          lock =1;
+		   }
+		 else if(lock !=1) {
+			    TX1REG = 0x02;
+		  	    lamp_t.lampColor=0;
+				lamp_t.zeroflag=0;
+				lock_k=2;
 		  	}
    
 	   break;
    
 	   case 0x04://KEY_BLUE
-	      inputKey_blue = inputKey_blue ^ 0X01;
-		  if(inputKey_blue ==1){
+	     
+		  if(inputKey_blue != lamp_t.lampColor && lock_k!=2){
 		  	lamp_t.lampColor = 0x04;
-			 inputKey_red=0;
-	         inputKey_green =0;
-			 inputKey_white=0;
+			inputKey_blue = lamp_t.lampColor;
+			   lock =1;
 		  }
-		  else{
+		  else if(lock !=1) {
 			  TX1REG = 0x04;
-		  	 lamp_t.lampColor=0;
+		  	  lamp_t.lampColor=0;
+			  lamp_t.zeroflag=0;
+			  lock_k=2;
 			
 		  	}
    
 	   break;
    
 	   case 0x08://KEY_WHITE
-	       inputKey_white = inputKey_white ^ 0x01;
-		   if(inputKey_white==1){
-		        lamp_t.lampColor = 0x08;
-			 	inputKey_red=0;
-             	inputKey_blue =0;
-		  		inputKey_green=0;
+		   if(inputKey_white !=lamp_t.lampColor && lock_k!=2 ){
+                 lamp_t.lampColor = 0x08;
+				inputKey_white = lamp_t.lampColor;
+			 	   lock =1;
 		   }
-		   else{
+		   else if(lock !=1) {
 			   TX1REG = 0x08;
 		   	   lamp_t.lampColor=0;
-				
+			   lamp_t.zeroflag=0;
+			   lock_k=2;
 		   	}
    
 	   break;
@@ -162,12 +153,14 @@ void checkRun(void)
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
 				TX1REG = 0xff;
-		
-	     
-    break;
+				lamp_t.zeroflag=1;
+				lamp_t.lampColor=0;
+				
+	break;
 
     case 0x01: //KEY_RED
         lamp_t.lampWhichColor_ON_flag = Red;
+		lamp_t.zeroflag=2;
 		TMR2_Stop();//TMR2_StartTimer();
         LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
@@ -186,7 +179,7 @@ void checkRun(void)
 
 	case 0x02: //KEY_GREEN
 	    lamp_t.lampWhichColor_ON_flag = Green;
-		
+		lamp_t.zeroflag=2;
 		PWM3_LoadDutyValue(0x0);
         LAMP_RED_OFF();
 	    LAMP_BLUE_OFF();
@@ -203,7 +196,7 @@ void checkRun(void)
 
 	case 0x04://KEY_BLUE
 	    lamp_t.lampWhichColor_ON_flag = Blue;
-		
+		lamp_t.zeroflag=2;
 		PWM3_LoadDutyValue(0x0);
 	    LAMP_GREEN_OFF();
 		LAMP_RED_OFF();
@@ -221,7 +214,7 @@ void checkRun(void)
 
 	case 0x08://KEY_WHITE
 	    lamp_t.lampWhichColor_ON_flag = White;
-	
+		lamp_t.zeroflag=2;
 		PWM3_LoadDutyValue(0x0);
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
@@ -239,28 +232,31 @@ void checkRun(void)
 
 
 	case 0x10: //KEY_ADD "+"
-	     
-		   FAN_OFF_FUN();
+	       if(lamp_t.zeroflag==2){
+			FAN_OFF_FUN();
 
-		    if(lamp_t.pwmDuty >DUTY_MAX_LEVE) 
-		   		lamp_t.pwmDuty= DUTY_MAX_LEVE;
-		    else lamp_t.pwmDuty =lamp_t.pwmDuty + STEPNUMBERS;
+				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) 
+					lamp_t.pwmDuty= DUTY_MAX_LEVE;
+				else lamp_t.pwmDuty =lamp_t.pwmDuty + STEPNUMBERS;
 
-		   PWM3_LoadDutyValue(lamp_t.pwmDuty);
-		 //  TX1REG = 0x1a;
+			PWM3_LoadDutyValue(lamp_t.pwmDuty);
+		   
+		   TX1REG = 0x1a;
+		   }
 
 	break;
 
 	case 0x20: //KEY_SUB "-"
          
-		 
+		 if(lamp_t.zeroflag==2){
 	      FAN_OFF_FUN();
 		  if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) 
 		   		lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
 		  else lamp_t.pwmDuty = lamp_t.pwmDuty - STEPNUMBERS;
 
 		  PWM3_LoadDutyValue(lamp_t.pwmDuty);
-		//  TX1REG = 0x2a;
+		 TX1REG = 0x2a;
+		 }
 
 	break;
 

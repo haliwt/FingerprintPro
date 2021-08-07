@@ -22,7 +22,7 @@ uint8_t  KEY_Scan(void)
     
     
     if(KEY_RED() ==0){
-        if(k1<200)
+        if(k1<400)
         k1++;   
     }
     else {  
@@ -30,7 +30,7 @@ uint8_t  KEY_Scan(void)
     }
     
     if(KEY_GREEN() ==0){
-       if(k2<200)
+       if(k2<400)
         k2++; 
        
     }
@@ -40,7 +40,7 @@ uint8_t  KEY_Scan(void)
     }  
     
     if(KEY_BLUE() ==0){
-       if(k3<200)
+       if(k3<400)
         k3++; 
        
     }
@@ -50,7 +50,7 @@ uint8_t  KEY_Scan(void)
     } 
     
     if(KEY_WHITE() ==0){
-       if(k4<200)
+       if(k4<400)
         k4++; 
        
     }
@@ -60,7 +60,7 @@ uint8_t  KEY_Scan(void)
     }  
     
     if(KEY_ADD() ==0){ //"+"
-       if(k5<200)
+       if(k5<400)
         k5++; 
        
     }
@@ -70,7 +70,7 @@ uint8_t  KEY_Scan(void)
     } 
 
 	if(KEY_SUB() ==0){ //"-"
-       if(k6<200)
+       if(k6<400)
         k6++; 
        
     }
@@ -80,32 +80,32 @@ uint8_t  KEY_Scan(void)
     } 
 	
   
-    if(k1==190){
+    if(k1==390){
        cnt= 0x1  ;  //KEY_RED
        k1=0;
        return cnt ;
     } 
-    if(k2==190){
+    if(k2==390){
         cnt= 0x2  ; //KEY_GREEN 
         k2=0;
         return cnt ;
     }
-    if(k3==190){
+    if(k3==390){
         cnt= 0x4  ;  //KEY_BLUE 
         k3=0;
         return cnt ;
     }
-    if(k4==190){
+    if(k4==390){
         cnt= 0x8  ;  //KEY_WHITE
         k4=0;
         return cnt ;
     }
-    if(k5==190){
+    if(k5==390){
         cnt= 0x10 ;   //KEY_ADD
         k5=0;
         return cnt ;
     }
-	if(k6==190){
+	if(k6==390){
 	  cnt =0x20;      //KEY_SUB
 	  k6=0;
       return cnt ;
