@@ -34,7 +34,10 @@ typedef struct {
    uint8_t lampColor;
    uint8_t lampWhichColor_ON_flag;
    uint8_t zeroflag;
+   uint8_t lampPWM_adj;
+   uint8_t lampPWM_ON;
    uint16_t pwmDuty;
+   
 
    
    

@@ -76,7 +76,7 @@ void main(void)
         //if(KEY_BLUE()==0)FAN_ON_FUN();
 		//if(KEY_GREEN()==0)FAN_ON_FUN();
 		//if(KEY_WHITE()==0)FAN_ON_FUN();
-         keyValue=  KEY_Scan();
+          keyValue=  KEY_Scan();
 		      checkMode(keyValue);
 		      checkRun();
 	

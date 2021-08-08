@@ -81,35 +81,36 @@ uint8_t  KEY_Scan(void)
 	
   
     if(k1==390){
-       cnt= 0x1  ;  //KEY_RED
-       k1=0;
+       cnt= 0x1  ;  //KEY_WHITE
+      // k1=0;
        return cnt ;
     } 
     if(k2==390){
-        cnt= 0x2  ; //KEY_GREEN 
-        k2=0;
+        cnt= 0x2  ; //KEY_BLUE
+       // k2=0;
         return cnt ;
     }
     if(k3==390){
-        cnt= 0x4  ;  //KEY_BLUE 
-        k3=0;
+        cnt= 0x4  ;  //KEY_GREEN
+       // k3=0;
         return cnt ;
     }
+    if(k6==390){
+	  cnt =0x08;      //KEY_green
+	 // k6=0;
+      return cnt ;
+	}
     if(k4==390){
-        cnt= 0x8  ;  //KEY_WHITE
-        k4=0;
+        cnt= 0x20  ;  //KEY_ADD
+     //   k4=0;
         return cnt ;
     }
     if(k5==390){
-        cnt= 0x10 ;   //KEY_ADD
-        k5=0;
+        cnt= 0x10 ;   //KEY_SUB
+      //  k5=0;
         return cnt ;
     }
-	if(k6==390){
-	  cnt =0x20;      //KEY_SUB
-	  k6=0;
-      return cnt ;
-	}
+	
     return 0 ;
     
 }
