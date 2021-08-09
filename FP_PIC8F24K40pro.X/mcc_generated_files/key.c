@@ -82,7 +82,7 @@ uint8_t  KEY_Scan(void)
   
     if(k1==390){
        cnt= 0x1  ;  //KEY_WHITE
-      // k1=0;
+      // k1=0; //BUG
        return cnt ;
     } 
     if(k2==390){

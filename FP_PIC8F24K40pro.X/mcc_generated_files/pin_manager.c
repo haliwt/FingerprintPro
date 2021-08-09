@@ -64,7 +64,7 @@ void PIN_MANAGER_Initialize(void)
     /**
     TRISx registers
     */
-    TRISA = 0x3F;
+    TRISA = 0x3F; //0B 0011 1111 
     TRISB = 0xC7;//0B  1100  0111
     TRISC = 0x85; //0B 1000 0101 //RC5
 
@@ -73,7 +73,7 @@ void PIN_MANAGER_Initialize(void)
     */
     ANSELC = 0x41; //0B 0100 0001  //RC0 NC
     ANSELB = 0xC2; //0B 1100 0010  //RB2 ->ADC RB6,RB7->Update soft
-    ANSELA = 0x00;
+    ANSELA = 0x00; //0B 0000 0000 
 
     /**
     WPUx registers

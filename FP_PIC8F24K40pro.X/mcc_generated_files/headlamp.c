@@ -49,7 +49,7 @@ void checkMode(uint8_t keyvalue)
    
 	   case 0x1: //KEY_white
          
-		  if(inputKey_white !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=1){
+		  if(inputKey_white !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=White){
 			   lamp_t.lampColor = 0x01;
 			   inputKey_white = lamp_t.lampColor;
 		       lock =1;
@@ -66,7 +66,7 @@ void checkMode(uint8_t keyvalue)
    
 	   case 0x02: //KEY_blue
 	     
-		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=1){
+		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Blue){
 			  lamp_t.lampColor = 0x02;
 			  inputKey_blue = lamp_t.lampColor;
 		          lock =1;
@@ -83,7 +83,7 @@ void checkMode(uint8_t keyvalue)
    
 	   case 0x04://KEY_green
 	     
-		  if(inputKey_green != lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=1){
+		  if(inputKey_green != lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Green){
 		  	lamp_t.lampColor = 0x04;
 			inputKey_green = lamp_t.lampColor;
 			   lock =1;
@@ -100,7 +100,7 @@ void checkMode(uint8_t keyvalue)
 	   break;
    
 	   case 0x08://KEY_Red
-		   if(inputKey_red !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=1){
+		   if(inputKey_red !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Red){
                  lamp_t.lampColor = 0x08;
 				inputKey_red = lamp_t.lampColor;
 			 	   lock =1;
@@ -149,6 +149,7 @@ void checkRun(void)
 	case 0: //turn off lamp 
 		FAN_OFF_FUN();
 		ICXL6006_DISABLE() ;
+		lamp_t.lampWhichColor_ON_flag=noColor;
 		TMR2_Stop();//TMR2_StartTimer();
 		LAMP_GREEN_OFF();
 		LAMP_BLUE_OFF();
@@ -158,13 +159,16 @@ void checkRun(void)
 		lamp_t.zeroflag=1;
 		lamp_t.lampColor=0;
 		lamp_t.lampPWM_ON=0;
+		lamp_t.lampPWM_adj=0;
 				
 	break;
 
     case 0x01: //KEY_WHITE LED
         lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
+		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
+		PWM3_LoadDutyValue(0x0);
         LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
 		LAMP_RED_OFF();
@@ -183,6 +187,8 @@ void checkRun(void)
 	case 0x02: //KEY_blue
 	    lamp_t.lampWhichColor_ON_flag = Blue;
 		lamp_t.zeroflag=2;
+		ICXL6006_DISABLE() ;
+		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
         LAMP_RED_OFF();
 		LAMP_WHITE_OFF();
@@ -200,6 +206,8 @@ void checkRun(void)
 	case 0x04://KEY_green
 	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
+		ICXL6006_DISABLE() ;
+		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
 	    
 		LAMP_RED_OFF();
@@ -219,6 +227,8 @@ void checkRun(void)
 	case 0x08://KEY_RED
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
+		ICXL6006_DISABLE() ;
+		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
@@ -244,8 +254,9 @@ void checkRun(void)
 				else lamp_t.pwmDuty =lamp_t.pwmDuty + STEPNUMBERS;
 
 			 PWM3_LoadDutyValue(lamp_t.pwmDuty);
+			 
 			 lamp_t.lampColor= 0x40;
-			 lamp_t.lampPWM_ON=1;
+			 lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
 		
 		   TX1REG = 0x1a;
 		   }
@@ -262,7 +273,8 @@ void checkRun(void)
 
 		  PWM3_LoadDutyValue(lamp_t.pwmDuty);
 		  lamp_t.lampColor= 0x40;
-		   lamp_t.lampPWM_ON=1;
+		   lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
+		  
 		 TX1REG = 0x2a;
 		 }
 
@@ -294,12 +306,13 @@ static void PWM_DUTY_ADJ(void)
         switch(lamp_t.lampPWM_adj){
 			
 			case White:
+			     lamp_t.lampPWM_ON=White;
 				LAMP_GREEN_OFF();
 				LAMP_BLUE_OFF();
 				LAMP_RED_OFF();
 				
 				LAMP_WHITE_ON();
-				//FAN_ON_FUN();
+				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 				//ICXL6006_ENABLE() ;
@@ -307,12 +320,13 @@ static void PWM_DUTY_ADJ(void)
 			break;
 			
 			case Blue:
+			     lamp_t.lampPWM_ON=Blue;
 				LAMP_RED_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_GREEN_OFF();
 				
 				 LAMP_BLUE_ON();
-				//FAN_ON_FUN();
+				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 				//ICXL6006_ENABLE() ;
@@ -320,12 +334,13 @@ static void PWM_DUTY_ADJ(void)
 			break;
 			
 			case Green:
+				lamp_t.lampPWM_ON=Green;
 				LAMP_RED_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_BLUE_OFF();
 
 				LAMP_GREEN_ON();
-				//FAN_ON_FUN();
+				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 				//ICXL6006_ENABLE() ;
@@ -333,12 +348,13 @@ static void PWM_DUTY_ADJ(void)
 			break;
 			
 			case Red:
+			lamp_t.lampPWM_ON=Red;
 			LAMP_GREEN_OFF();
 			LAMP_BLUE_OFF();
 			LAMP_WHITE_OFF();
 
 			LAMP_RED_ON();
-			//FAN_ON_FUN();
+			FAN_ON_FUN();
 			
 			//TMR2_StartTimer();
 			PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
