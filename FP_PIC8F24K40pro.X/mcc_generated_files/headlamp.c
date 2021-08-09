@@ -47,9 +47,9 @@ void checkMode(uint8_t keyvalue)
 		
 	   break;
    
-	   case 0x1: //KEY_white
+	   case 0x1: //KEY_RED
          
-		  if(inputKey_white !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=White){
+		  if(inputKey_white !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Red){
 			   lamp_t.lampColor = 0x01;
 			   inputKey_white = lamp_t.lampColor;
 		       lock =1;
@@ -64,9 +64,9 @@ void checkMode(uint8_t keyvalue)
    
 	   break;
    
-	   case 0x02: //KEY_blue
+	   case 0x02: //KEY_GREEN
 	     
-		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Blue){
+		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Green){
 			  lamp_t.lampColor = 0x02;
 			  inputKey_blue = lamp_t.lampColor;
 		          lock =1;
@@ -81,9 +81,9 @@ void checkMode(uint8_t keyvalue)
    
 	   break;
    
-	   case 0x04://KEY_green
+	   case 0x04://KEY_BLUE
 	     
-		  if(inputKey_green != lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Green){
+		  if(inputKey_green != lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Blue){
 		  	lamp_t.lampColor = 0x04;
 			inputKey_green = lamp_t.lampColor;
 			   lock =1;
@@ -99,8 +99,8 @@ void checkMode(uint8_t keyvalue)
    
 	   break;
    
-	   case 0x08://KEY_Red
-		   if(inputKey_red !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Red){
+	   case 0x08://KEY_WHITE
+		   if(inputKey_red !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=White){
                  lamp_t.lampColor = 0x08;
 				inputKey_red = lamp_t.lampColor;
 			 	   lock =1;
@@ -116,13 +116,13 @@ void checkMode(uint8_t keyvalue)
 	   break;
    
    
-	   case 0x10: //KEY_ADD "+"
+	   case 0x10: //KEY_ADD "-"
           TX1REG = 0x10;
 	      lamp_t.lampColor = 0x10;
    
 	   break;
    
-	   case 0x20: //KEY_SUB "-"
+	   case 0x20: //KEY_SUB "+"
 	      TX1REG = 0x20;
           lamp_t.lampColor = 0x20;
    
@@ -163,17 +163,17 @@ void checkRun(void)
 				
 	break;
 
-    case 0x01: //KEY_WHITE LED
-        lamp_t.lampWhichColor_ON_flag = White;
+    case 0x01: //KEY_RED
+        lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
         LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
-		LAMP_RED_OFF();
+	    LAMP_WHITE_OFF();
 
-		LAMP_WHITE_ON();
+		LAMP_RED_ON();
 		FAN_ON_FUN();
 
 		
@@ -184,17 +184,17 @@ void checkRun(void)
 		
 	break;
 
-	case 0x02: //KEY_blue
-	    lamp_t.lampWhichColor_ON_flag = Blue;
+	case 0x02: //KEY_GREEN
+	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
         LAMP_RED_OFF();
 		LAMP_WHITE_OFF();
-		LAMP_GREEN_OFF();
+	    LAMP_BLUE_OFF();
 
-		 LAMP_BLUE_ON();
+		 LAMP_GREEN_ON();
 		 FAN_ON_FUN();
 		 TMR2_StartTimer();
          PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
@@ -203,8 +203,8 @@ void checkRun(void)
 
 	break;
 
-	case 0x04://KEY_green
-	    lamp_t.lampWhichColor_ON_flag = Green;
+	case 0x04://KEY_BLUE
+	    lamp_t.lampWhichColor_ON_flag = Blue;
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
@@ -212,9 +212,9 @@ void checkRun(void)
 	    
 		LAMP_RED_OFF();
 	    LAMP_WHITE_OFF();
-        LAMP_BLUE_OFF();
+        LAMP_GREEN_OFF();
 
-		 LAMP_GREEN_ON();
+		 LAMP_BLUE_ON();
 		FAN_ON_FUN();
 		
 		TMR2_StartTimer();
@@ -224,17 +224,17 @@ void checkRun(void)
 
 	break;
 
-	case 0x08://KEY_RED
-	    lamp_t.lampWhichColor_ON_flag = Red;
+	case 0x08://KEY_WHITE
+	    lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
-		LAMP_WHITE_OFF();
+        LAMP_RED_OFF();
 
-		LAMP_RED_ON();
+		LAMP_WHITE_ON();
 		FAN_ON_FUN();
 		
 		TMR2_StartTimer();
@@ -245,13 +245,13 @@ void checkRun(void)
 	break;
 
 
-	case 0x10: //KEY_ADD "+"
+	case 0x20: //KEY_ADD "+"
 	       if(lamp_t.zeroflag==2){
 			FAN_OFF_FUN();
 
 				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) 
 					lamp_t.pwmDuty= DUTY_MAX_LEVE;
-				else lamp_t.pwmDuty =lamp_t.pwmDuty + STEPNUMBERS;
+				else lamp_t.pwmDuty =lamp_t.pwmDuty + DUTY_STEP_LEVEL ;
 
 			 PWM3_LoadDutyValue(lamp_t.pwmDuty);
 			 
@@ -263,13 +263,13 @@ void checkRun(void)
 
 	break;
 
-	case 0x20: //KEY_SUB "-"
+	case 0x10: //KEY_SUB "-"
          
 		 if(lamp_t.zeroflag==2){
 	      FAN_OFF_FUN();
 		  if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) 
 		   		lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
-		  else lamp_t.pwmDuty = lamp_t.pwmDuty - STEPNUMBERS;
+		  else lamp_t.pwmDuty = lamp_t.pwmDuty - DUTY_STEP_LEVEL ;
 
 		  PWM3_LoadDutyValue(lamp_t.pwmDuty);
 		  lamp_t.lampColor= 0x40;

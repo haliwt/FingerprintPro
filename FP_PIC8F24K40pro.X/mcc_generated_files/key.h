@@ -7,10 +7,10 @@
 #include "../c99/bits/alltypes.h"
 
 //#define IO_RA0_GetValue()           PORTAbits.RA0
-#define KEY_RED()    				PORTAbits.RA0
-#define KEY_GREEN()					PORTAbits.RA1
-#define KEY_BLUE()					PORTAbits.RA2
-#define KEY_WHITE()					PORTAbits.RA3
+#define KEY_RED()    				PORTAbits.RA3//PORTAbits.RA0
+#define KEY_GREEN()					PORTAbits.RA2//PORTAbits.RA1
+#define KEY_BLUE()					PORTAbits.RA1//PORTAbits.RA2
+#define KEY_WHITE()					PORTAbits.RA0//PORTAbits.RA3
 #define KEY_ADD()					PORTAbits.RA4
 #define KEY_SUB()					PORTAbits.RA5
 
