@@ -168,7 +168,7 @@ void checkRun(void)
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
-		PWM3_LoadDutyValue(0x0);
+		//PWM3_LoadDutyValue(0x0);
         LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
 	    LAMP_WHITE_OFF();
@@ -189,7 +189,7 @@ void checkRun(void)
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
-		PWM3_LoadDutyValue(0x0);
+		//PWM3_LoadDutyValue(0x0);
         LAMP_RED_OFF();
 		LAMP_WHITE_OFF();
 	    LAMP_BLUE_OFF();
@@ -208,7 +208,7 @@ void checkRun(void)
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
-		PWM3_LoadDutyValue(0x0);
+		//PWM3_LoadDutyValue(0x0);
 	    
 		LAMP_RED_OFF();
 	    LAMP_WHITE_OFF();
@@ -229,7 +229,7 @@ void checkRun(void)
 		lamp_t.zeroflag=2;
 		ICXL6006_DISABLE() ;
 		TMR2_Stop();//TMR2_StartTimer();
-		PWM3_LoadDutyValue(0x0);
+		//PWM3_LoadDutyValue(0x0);
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
         LAMP_RED_OFF();

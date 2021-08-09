@@ -11,8 +11,8 @@
 #define LAMP_WHITE_OFF() 				  do { LATAbits.LATA6 = 0; } while(0)
 #define LAMP_WHITE_ON()  				  do { LATAbits.LATA6 = 1; } while(0)  //EDIT RED->WHITE
 
-#define LAMP_RED_OFF() 				  do { LATAbits.LATA7 = 0; } while(0)
-#define LAMP_RED_ON()  			    do { LATAbits.LATA7 = 1; } while(0)      //EDIT GREEN->RED
+#define LAMP_RED_OFF() 				         do { LATAbits.LATA7 = 0; } while(0)
+#define LAMP_RED_ON()  			            do { LATAbits.LATA7 = 1; } while(0)      //EDIT GREEN->RED
 
 #define LAMP_GREEN_OFF() 				  do { LATBbits.LATB3 = 0; } while(0)
 #define LAMP_GREEN_ON()  				  do { LATBbits.LATB3 = 1; } while(0) //EDIT BLUE->GREEN
@@ -20,8 +20,8 @@
 #define LAMP_BLUE_OFF() 				    do { LATBbits.LATB4 = 0; } while(0)
 #define LAMP_BLUE_ON()  			        do { LATBbits.LATB4 = 1; } while(0) //EDIT WHITE->BLUE
 
-#define ICXL6006_ENABLE()           do { LATCbits.LATC5 = 1; } while(0)
-#define ICXL6006_DISABLE()          do { LATCbits.LATC5 = 0; } while(0)      
+#define ICXL6006_ENABLE()           do { LATCbits.LATC3 = 0; } while(0)
+#define ICXL6006_DISABLE()          do { LATCbits.LATC3 = 1; } while(0)      
 
 #define DUTY_MAX_LEVE                 699
 #define DUTY_MIN_LEVEL                199
