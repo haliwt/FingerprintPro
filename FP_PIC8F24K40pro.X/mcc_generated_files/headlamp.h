@@ -24,8 +24,8 @@
 #define ICXL6006_DISABLE()          do { LATCbits.LATC3 = 1; } while(0)      
 
 #define DUTY_MAX_LEVE                 699
-#define DUTY_MIN_LEVEL                199
-#define DUTY_STEP_LEVEL               50
+#define DUTY_MIN_LEVEL                100
+#define DUTY_STEP_LEVEL               100
 
 
 

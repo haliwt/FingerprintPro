@@ -53,6 +53,15 @@ void checkMode(uint8_t keyvalue)
 			   lamp_t.lampColor = 0x01;
 			   inputKey_white = lamp_t.lampColor;
 		       lock =1;
+			    ICXL6006_DISABLE() ;
+			    LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				TMR2_Stop();//TMR2_StartTimer();
+				FAN_OFF_FUN();
+			   
+				
 			}
 			else if(lock !=1) {
 				TX1REG = 0x01;
@@ -69,7 +78,15 @@ void checkMode(uint8_t keyvalue)
 		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Green){
 			  lamp_t.lampColor = 0x02;
 			  inputKey_blue = lamp_t.lampColor;
-		          lock =1;
+		        lock =1;
+				ICXL6006_DISABLE() ;
+				LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				TMR2_Stop();//TMR2_StartTimer();
+				FAN_OFF_FUN();
+			 
 		 }
 		 else if(lock !=1) {
 			    TX1REG = 0x02;
@@ -87,7 +104,14 @@ void checkMode(uint8_t keyvalue)
 		  	lamp_t.lampColor = 0x04;
 			inputKey_green = lamp_t.lampColor;
 			   lock =1;
-		  }
+                ICXL6006_DISABLE() ;
+			   	LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				TMR2_Stop();//TMR2_StartTimer();
+				FAN_OFF_FUN();
+			}
 		  else if(lock !=1) {
 			  TX1REG = 0x04;
 		  	  lamp_t.lampColor=0;
@@ -104,6 +128,13 @@ void checkMode(uint8_t keyvalue)
                  lamp_t.lampColor = 0x08;
 				inputKey_red = lamp_t.lampColor;
 			 	   lock =1;
+				ICXL6006_DISABLE() ;
+				LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				TMR2_Stop();//TMR2_StartTimer();
+				FAN_OFF_FUN();
 		   }
 		   else if(lock !=1) {
 			   TX1REG = 0x08;
@@ -149,12 +180,13 @@ void checkRun(void)
 	case 0: //turn off lamp 
 		FAN_OFF_FUN();
 		ICXL6006_DISABLE() ;
-		lamp_t.lampWhichColor_ON_flag=noColor;
 		TMR2_Stop();//TMR2_StartTimer();
+		lamp_t.lampWhichColor_ON_flag=noColor;
 		LAMP_GREEN_OFF();
 		LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
 		LAMP_RED_OFF();
+
 		TX1REG = 0xff;
 		lamp_t.zeroflag=1;
 		lamp_t.lampColor=0;
@@ -166,13 +198,11 @@ void checkRun(void)
     case 0x01: //KEY_RED
         lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
-		ICXL6006_DISABLE() ;
-		TMR2_Stop();//TMR2_StartTimer();
-		//PWM3_LoadDutyValue(0x0);
-        LAMP_GREEN_OFF();
-	    LAMP_BLUE_OFF();
-	    LAMP_WHITE_OFF();
-
+		LAMP_GREEN_OFF();
+		LAMP_BLUE_OFF();
+		LAMP_WHITE_OFF();
+		
+		
 		LAMP_RED_ON();
 		FAN_ON_FUN();
 
@@ -187,12 +217,10 @@ void checkRun(void)
 	case 0x02: //KEY_GREEN
 	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
-		ICXL6006_DISABLE() ;
-		TMR2_Stop();//TMR2_StartTimer();
-		//PWM3_LoadDutyValue(0x0);
-        LAMP_RED_OFF();
+		LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
-	    LAMP_BLUE_OFF();
+		LAMP_RED_OFF();
+	
 
 		 LAMP_GREEN_ON();
 		 FAN_ON_FUN();
@@ -206,13 +234,9 @@ void checkRun(void)
 	case 0x04://KEY_BLUE
 	    lamp_t.lampWhichColor_ON_flag = Blue;
 		lamp_t.zeroflag=2;
-		ICXL6006_DISABLE() ;
-		TMR2_Stop();//TMR2_StartTimer();
-		//PWM3_LoadDutyValue(0x0);
-	    
+		LAMP_GREEN_OFF();
+		LAMP_WHITE_OFF();
 		LAMP_RED_OFF();
-	    LAMP_WHITE_OFF();
-        LAMP_GREEN_OFF();
 
 		 LAMP_BLUE_ON();
 		FAN_ON_FUN();
@@ -227,12 +251,9 @@ void checkRun(void)
 	case 0x08://KEY_WHITE
 	    lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
-		ICXL6006_DISABLE() ;
-		TMR2_Stop();//TMR2_StartTimer();
-		//PWM3_LoadDutyValue(0x0);
 		LAMP_GREEN_OFF();
-	    LAMP_BLUE_OFF();
-        LAMP_RED_OFF();
+		LAMP_BLUE_OFF();
+		LAMP_RED_OFF();
 
 		LAMP_WHITE_ON();
 		FAN_ON_FUN();
