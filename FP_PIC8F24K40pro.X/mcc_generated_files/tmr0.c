@@ -51,22 +51,29 @@
 #include <xc.h>
 #include "tmr0.h"
 
-
+/***************************************************************************************
+   * 
+   * Function Name:void TMR0_Initialize(void)
+   *Function: Timer1  :prescale = 16,Timer1 period = 2ms .Tosc =1/8Mhz =0.125us
+   *          TMR0H = (T1 period)/(4*prescale*Tosc)= 2/(4*16*0.125*10^-3)=250 -1=249(0xF9)
+   * 
+   * 
+***************************************************************************************/
 /**
   Section: TMR0 APIs
 */
 
-void (*TMR0_InterruptHandler)(void);
+void (*TMR0_InterruptHandler)(void); //function pointer 
 
 void TMR0_Initialize(void)
 {
     // Set TMR0 to the options selected in the User Interface
 
-    // T0CS T0CKI_PIN; T0CKPS 1:1; T0ASYNC synchronised; 
-    T0CON1 = 0x00;
+    // T0CS FOSC/4; T0CKPS 1:16; T0ASYNC synchronised; 
+    T0CON1 = 0x44;
 
-    // TMR0H 199; 
-    TMR0H = 0xC7;
+    // TMR0H 249; 
+    TMR0H = 0xF9;
 
     // TMR0L 0; 
     TMR0L = 0x00;
