@@ -54,11 +54,12 @@ void checkMode(uint8_t keyvalue)
 			 powerflag = powerflag ^ 0x01;
 			 if(powerflag==1){
 				lamp_t.Power_On =1; //power on =1
-				 
+				lamp_t.switch_dev=1;
 			 }
 			 else{
 				 
 				 lamp_t.Power_On=0;
+				 lamp_t.switch_dev=0;
 			 }
 			 
 	      

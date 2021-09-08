@@ -43,7 +43,9 @@ typedef struct {
    uint8_t getMinutes15_flag;
    uint8_t gbatteryLifePercent;
    uint8_t Power_On;
+   uint8_t switch_dev;
    uint16_t pwmDuty;
+   
    
    
 }LAMP_T;

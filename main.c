@@ -53,8 +53,16 @@ void main(void)
           if(lamp_t.getMinutes15_flag ==1){
                 lamp_t.getMinutes15_flag =0;
                 LAMP_ShutOff();
+                lamp_t.Power_On=0;
             }
             else{
+              if(lamp_t.switch_dev==1){
+                  if(tim0_t.tim0_noBatt_s>120)
+                       lamp_t.switch_dev++;
+                  ADC_Battery_ConversionValue_Voltage();    
+                  DisplayBattery_Power_Estimate();
+                
+              }
               if(BATT_DetectedGetValue()==1 ){
                 ADC_Battery_ConversionValue_Voltage();
                 DisplayBattery_Power_Estimate();
