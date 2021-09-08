@@ -74,9 +74,9 @@ void main(void)
            PowerOff_Fun();
         }
        
-          keyValue=  KEY_Scan();
-		      checkMode(keyValue);
-		      checkRun();
+        keyValue=  KEY_Scan();
+		   checkMode(keyValue);
+		    checkRun();
         }
 }
 /**

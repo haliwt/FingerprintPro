@@ -471,6 +471,9 @@ void PowerOff_Fun(void)
 {
 	LAMP_Init_Value();
 	LAMP_ShutOff();
-	
+	LED_40_SetHigh() ;
+	LED_60_SetHigh();
+	LED_80_SetHigh() ;
+	LED_100_SetHigh();
 }
 
