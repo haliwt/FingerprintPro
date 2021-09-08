@@ -53,12 +53,13 @@
 #include <stdbool.h>
 #include <conio.h>
 #include "interrupt_manager.h"
+#include "adcc.h"
+#include "pwm3.h"
 #include "tmr2.h"
 #include "tmr0.h"
 #include "adcc.h"
 #include "pwm3.h"
-#include "ext_int.h"
-#include "eusart.h"
+
 #include "key.h"
 #include "led.h"
 #include "headlamp.h"

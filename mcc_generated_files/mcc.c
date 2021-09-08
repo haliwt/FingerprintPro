@@ -56,9 +56,7 @@ void SYSTEM_Initialize(void)
     ADCC_Initialize();
     PWM3_Initialize();
     TMR2_Initialize();
-   // EXT_INT_Initialize();
     TMR0_Initialize();
-   // EUSART_Initialize();//RC6 ->GPIO IC 
 }
 
 void OSCILLATOR_Initialize(void)
