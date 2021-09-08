@@ -65,5 +65,5 @@ void checkRun(void);
 
 void LAMP_Init_Value(void);
 void LAMP_ShutOff(void);
-
+void PowerOff_Fun(void);
 #endif 

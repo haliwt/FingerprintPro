@@ -14,7 +14,7 @@
 #define KEY_ADD()					PORTAbits.RA4
 
 #define KEY_SUB()					PORTAbits.RA5
-#define KEY_POWER()                 PORTCbits.RC6  //POWER -KEY INPUT
+#define KEY_POWER()                 PORTCbits.RC6  //POWER -KEY INPUT-new PCB
 
 
 

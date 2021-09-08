@@ -38,8 +38,8 @@ void LAMP_Init_Value(void)
 void checkMode(uint8_t keyvalue)
 {
 
-    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff;
-	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0;
+    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,powerflag;
+	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0;
 	switch(keyvalue){
        case 0:
 
@@ -47,6 +47,22 @@ void checkMode(uint8_t keyvalue)
 		  	return ;
 		  
 		
+	   break;
+	   
+	   case 0x40: //POWER ON and off
+	         lamp_t.lampColor=0xff;
+			 powerflag = powerflag ^ 0x01;
+			 if(powerflag==1){
+				lamp_t.Power_On =1; //power on =1
+				 
+			 }
+			 else{
+				 
+				 lamp_t.Power_On=0;
+			 }
+			 
+	      
+	   
 	   break;
    
 	   case 0x1: //KEY_WHITE
@@ -336,6 +352,11 @@ void checkRun(void)
 	
 	break;
 	
+	case 0xff:
+		PowerOff_Fun();
+	
+	break;
+	
 	
     default:
     
@@ -446,5 +467,10 @@ static void PWM_DUTY_ADJ(void)
 
 
 
-
+void PowerOff_Fun(void)
+{
+	LAMP_Init_Value();
+	LAMP_ShutOff();
+	
+}
 

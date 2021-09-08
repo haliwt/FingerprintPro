@@ -48,25 +48,31 @@ void main(void)
 
     while (1)
     {
-        if(lamp_t.getMinutes15_flag ==1){
-              lamp_t.getMinutes15_flag =0;
-              LAMP_ShutOff();
-          }
-          else{
-            if(BATT_DetectedGetValue()==1 ){
-              ADC_Battery_ConversionValue_Voltage();
-              DisplayBattery_Power_Estimate();
+        
+        if(lamp_t.Power_On==1){
+          if(lamp_t.getMinutes15_flag ==1){
+                lamp_t.getMinutes15_flag =0;
+                LAMP_ShutOff();
             }
             else{
-              if(tim0_t.tim0_noBatt_s>120){
-                  tim0_t.tim0_noBatt_s=0;
-                  ADC_Battery_ConversionValue_Voltage();    
-                  DisplayBattery_Power_Estimate();
+              if(BATT_DetectedGetValue()==1 ){
+                ADC_Battery_ConversionValue_Voltage();
+                DisplayBattery_Power_Estimate();
               }
+              else{
+                if(tim0_t.tim0_noBatt_s>120){
+                    tim0_t.tim0_noBatt_s=0;
+                    ADC_Battery_ConversionValue_Voltage();    
+                    DisplayBattery_Power_Estimate();
+                }
 
-              
+                
+              }
             }
-          }
+        }
+        else{
+           PowerOff_Fun();
+        }
        
           keyValue=  KEY_Scan();
 		      checkMode(keyValue);
