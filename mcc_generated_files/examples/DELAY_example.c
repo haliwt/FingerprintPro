@@ -44,24 +44,24 @@ Note: 50 ms may be too fast for the naked eye to see, thus it may look like it i
 *  Call this function from main toggle PIN0 every 500 milliseconds
 @param none
 */
-void DELAY_MsExample(void)
-{   
-    DELAY_milliseconds(500);
+//void DELAY_MsExample(void)
+//{   
+ //   DELAY_milliseconds(500);
 
-    PIN0_Toggle();
-}
+    //PIN0_Toggle();
+//}
 
 /**
 *  \ingroup doc_driver_delay_example
 *  Call this function from main toggle PIN0 every 50000 microseconds
 @param none
 */
-void DELAY_UsExample(void)
-{
-    DELAY_microseconds(50000);
+//void DELAY_UsExample(void)
+//{
+    //DELAY_microseconds(50000);
 
-    PIN0_Toggle();
-}
+    //PIN0_Toggle();
+//}
 
 /**
  End of File

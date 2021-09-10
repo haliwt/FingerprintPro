@@ -50,6 +50,10 @@ void main(void)
     {
         
         if(lamp_t.Power_On==1){
+            MSP_EN_SetLow() ;
+             CPUDOZEbits.IDLEN =0;
+             CPUDOZEbits.DOZE=0;
+             CPUDOZEbits.DOZE = 0x00;
           if(lamp_t.getMinutes15_flag ==1){
                 lamp_t.getMinutes15_flag =0;
                 LAMP_ShutOff();
@@ -80,11 +84,18 @@ void main(void)
         }
         else{
            PowerOff_Fun();
+           CPUDOZEbits.IDLEN =1;
+           CPUDOZEbits.DOZE=1;
+           CPUDOZEbits.DOZE = 0x07;
+           CPUDOZEbits.ROI =1;
+           MSP_EN_SetHigh() ;
         }
        
         keyValue=  KEY_Scan();
-		   checkMode(keyValue);
-		    checkRun();
+        checkMode(keyValue);
+        if(lamp_t.Power_On==1){
+          checkRun();
+        }
         }
 }
 /**
