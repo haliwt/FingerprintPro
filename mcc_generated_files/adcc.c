@@ -51,6 +51,7 @@
 #include <xc.h>
 #include "adcc.h"
 #include "delay.h"
+#include "headlamp.h"
 
 ADC_t adc_t;
 
@@ -358,6 +359,31 @@ void ADC_Battery_ConversionValue_Voltage(void)
      
    
 
+}
+
+/*****************************************************************************
+	*
+	*Function Name:void BATTERY_ADCValue(void)
+	*Function :5V divider 1024(10bit) ,5v/1024 =0.00488v=4.88mV
+	*
+	*
+	*
+*****************************************************************************/
+void KEY_ADC_RC6(void)
+{
+       uint16_t vim,mV;
+        ADCC_StartConversion(channel_ANC6);
+        while(!ADCC_IsConversionDone());
+       vim= ADCC_GetSingleConversion(channel_ANC6);   //J8 UP
+      
+        mV=(vim * 5000)>>10; //mv =(vin *5000)/1024;
+        if(mV <80){ //
+            lamp_t.Power_On=0;
+        }
+        else{
+            lamp_t.Power_On=1;
+            
+        }
 }
 
 /**

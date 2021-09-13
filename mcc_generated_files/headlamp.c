@@ -26,6 +26,7 @@ void LAMP_Init_Value(void)
 		ICXL6006_DISABLE() ;
         TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
+		lamp_t.Power_On=1;
 }
 /***************************************************************************
 	*
@@ -38,8 +39,8 @@ void LAMP_Init_Value(void)
 void checkMode(uint8_t keyvalue)
 {
 
-    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,powerflag;
-	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0;
+    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,poweronflag;
+	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0,lock6=0,lock7=0;
 	switch(keyvalue){
        case 0:
 
@@ -50,21 +51,22 @@ void checkMode(uint8_t keyvalue)
 	   break;
 	   
 	   case 0x40: //POWER ON and off
-	         lamp_t.lampColor=0xff;
-			 powerflag = powerflag ^ 0x01;
-			 if(powerflag==1){
-				lamp_t.Power_On =1; //power on =1
-				lamp_t.switch_dev=1;
-			 }
-			 else{
-				 
-				 lamp_t.Power_On=0;
-				 lamp_t.switch_dev=0;
-			 }
+	        
+	         poweronflag =poweronflag ^ 0x01;
+			if(poweronflag==1 && lock7!=1){
+					lamp_t.lampColor = 0x80;
+					lamp_t.Power_On=1;
+					lamp_t.switch_dev=0;
+					lock6=1;
+			}
+			else if(lock6!=1){
+				lamp_t.lampColor = 0x80;
+				lamp_t.Power_On=0;
+				lock7=1;
+			}
 			 
-	      
-	   
-	   break;
+			 
+	     break;
    
 	   case 0x1: //KEY_WHITE
          
@@ -353,10 +355,7 @@ void checkRun(void)
 	
 	break;
 	
-	case 0xff:
-		PowerOff_Fun();
-	
-	break;
+
 	
 	
     default:
