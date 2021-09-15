@@ -51,13 +51,10 @@ void main(void)
         
         if(lamp_t.Power_On ==1){
             MSP_EN_SetLow() ;
-          
-             CPUDOZEbits.IDLEN =0;
-             CPUDOZEbits.DOZE=0;
-             CPUDOZEbits.DOZE = 0x00;
           if(lamp_t.getMinutes15_flag ==1){
                lamp_t.getMinutes15_flag =0;
-               LAMP_ShutOff();
+              // LAMP_ShutOff();
+               MSP_EN_SetHigh() ;
                lamp_t.Power_On=0;
            }
            else{
@@ -85,8 +82,7 @@ void main(void)
         } 
        
    
-       
-        keyValue=  KEY_Scan();
+      keyValue=  KEY_Scan();
         checkMode(keyValue);
         checkRun();
         
