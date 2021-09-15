@@ -48,20 +48,19 @@ void main(void)
 
     while (1)
     {
-         
-          if(lamp_t.Power_On==1){
-            MSP_EN_SetLow() ; 
-            DELAY_milliseconds(3000);
-            KEY_ADC_RC6();
-          }
-          else MSP_EN_SetHigh() ;
+        
+        if(lamp_t.Power_On ==1){
+            MSP_EN_SetLow() ;
           
+             CPUDOZEbits.IDLEN =0;
+             CPUDOZEbits.DOZE=0;
+             CPUDOZEbits.DOZE = 0x00;
           if(lamp_t.getMinutes15_flag ==1){
-                lamp_t.getMinutes15_flag =0;
-                LAMP_ShutOff();
-               
-            }
-            else{
+               lamp_t.getMinutes15_flag =0;
+               LAMP_ShutOff();
+               lamp_t.Power_On=0;
+           }
+           else{
               if(lamp_t.switch_dev==1){
                   if(tim0_t.tim0_noBatt_s>120)
                        lamp_t.switch_dev++;
@@ -83,9 +82,15 @@ void main(void)
                 
               }
             }
+        } 
+       
+   
+       
         keyValue=  KEY_Scan();
         checkMode(keyValue);
         checkRun();
+        
+       
         
         }
 }

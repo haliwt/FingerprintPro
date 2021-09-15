@@ -18,16 +18,16 @@ uint8_t  KEY_Scan(void)
     static uint16_t  k4=0 ;
     static uint16_t  k5=0 ;
 	static uint16_t  k6=0 ;
-   // static uint8_t   k7=0;
+    static uint8_t   k7=0;
     uint8_t cnt;
     
-    // if(KEY_POWER()==0){
-    //     if(k7<200)
-    //       k7++;
+    if(KEY_POWER()==0){
+        if(k7<200)
+          k7++;
         
-    // }
-   // else
-   //   k7=0;
+    }
+    else
+      k7=0;
     
     if(KEY_RED() ==0){
         if(k1<200)
@@ -88,10 +88,10 @@ uint8_t  KEY_Scan(void)
     } 
 	
     /***************************/
-    // if(k7==190){
-    //    cnt =0x40;
-    //    return cnt; 
-    // }
+    if(k7==190){
+       cnt =0x40;
+       return cnt; 
+    }
     
     if(k1==190){
        cnt= 0x1  ;  //KEY_White

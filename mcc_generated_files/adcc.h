@@ -86,7 +86,6 @@ typedef uint16_t adc_result_t;
 typedef enum
 {
     channel_ANB2 =  0xA,
-    channel_ANC6 =  0x16,
     channel_VSS =  0x3C,
     channel_Temp =  0x3D,
     channel_DAC1 =  0x3E,
@@ -917,7 +916,7 @@ void ADCC_DefaultInterruptHandler(void);
 
 
 void ADC_Battery_ConversionValue_Voltage(void);
-void KEY_ADC_RC6(void);
+
 //uint16_t ADCC_GetSingleConversion_Double(adcc_channel_t channel, uint8_t acquisitionDelay);
 
 #ifdef __cplusplus  // Provide C++ Compatibility

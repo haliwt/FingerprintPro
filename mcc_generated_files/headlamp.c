@@ -26,7 +26,7 @@ void LAMP_Init_Value(void)
 		ICXL6006_DISABLE() ;
         TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
-		lamp_t.Power_On=1;
+        lamp_t.Power_On=1;
 }
 /***************************************************************************
 	*
@@ -38,9 +38,9 @@ void LAMP_Init_Value(void)
 ****************************************************************************/
 void checkMode(uint8_t keyvalue)
 {
-
-    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,poweronflag;
-	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0,lock6=0,lock7=0;
+	static uint16_t i=0;
+    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,powerflag=0;
+	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0,lock6=0;
 	switch(keyvalue){
        case 0:
 
@@ -51,22 +51,26 @@ void checkMode(uint8_t keyvalue)
 	   break;
 	   
 	   case 0x40: //POWER ON and off
-	        
-	         poweronflag =poweronflag ^ 0x01;
-			if(poweronflag==1 && lock7!=1){
-					lamp_t.lampColor = 0x80;
-					lamp_t.Power_On=1;
+	       powerflag = powerflag ^ 0x01;
+	       if(powerflag ==1){
+			   
+	            lamp_t.Power_On=1;
+				lock6=1;
+				MSP_EN_SetLow() ;
+				i++;
+			   
+		   }
+		   else if(lock6 !=1 ){
+		            lamp_t.lampColor = 0x80;
+					lamp_t.Power_On=0;
 					lamp_t.switch_dev=0;
-					lock6=1;
+					MSP_EN_SetHigh() ;
+					
 			}
-			else if(lock6!=1){
-				lamp_t.lampColor = 0x80;
-				lamp_t.Power_On=0;
-				lock7=1;
-			}
+		   
+				
 			 
-			 
-	     break;
+		break;
    
 	   case 0x1: //KEY_WHITE
          
@@ -346,17 +350,8 @@ void checkRun(void)
 	break;
 	
 	case 0x80:
-	   if(lamp_t.Power_On ==1){
-		   MSP_EN_SetLow() ; //POWER ON
-	   }
-	   else
-	      MSP_EN_SetHigh();//power off 
-	       
-	
+			 MSP_EN_SetHigh() ;
 	break;
-	
-
-	
 	
     default:
     
