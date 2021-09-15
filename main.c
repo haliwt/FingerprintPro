@@ -61,14 +61,14 @@ void main(void)
                lamp_t.Power_On=0;
            }
            else{
-              if(lamp_t.switch_dev==1){
+              if(lamp_t.switch_dev==0){
                   if(tim0_t.tim0_noBatt_s>120)
                        lamp_t.switch_dev++;
                   ADC_Battery_ConversionValue_Voltage();    
                   DisplayBattery_Power_Estimate();
                 
               }
-              if(BATT_DetectedGetValue()==1 ){
+              if(BATT_DetectedGetValue()==1 ){//Battery be charing be detected
                 ADC_Battery_ConversionValue_Voltage();
                 DisplayBattery_Power_Estimate();
               }

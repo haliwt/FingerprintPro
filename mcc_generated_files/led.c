@@ -88,7 +88,7 @@ static void LEDDispalayBattery_Power(battery_id batid)
 				}
 			}
 			else{
-			    LED_40_SetHigh() ;
+			    LED_40_SetLow() ;
 			}
 			LED_60_SetHigh();
 		    LED_80_SetHigh();
@@ -144,36 +144,13 @@ static void LEDDispalayBattery_Power(battery_id batid)
 		 break;
 
 		 case battery_100:
-			if(BATT_DetectedGetValue()==1){
-					if(tim0_t.tim0_falg >49){
-						LED_100_SetHigh() ;
-						if(tim0_t.tim0_falg >99)
-							tim0_t.tim0_falg = 0;
-					}
-					else{
-						LED_100_SetLow() ;
-						
-			
-				}
-			}
-			else{
-			   LED_100_SetLow() ;
-			}
-		 	
-		 	LED_40_SetLow();
-			LED_60_SetLow();
-		    LED_80_SetLow();
-			
-		 break;
-
-		 case battery_full:
 			LED_100_SetLow() ;
 		    LED_40_SetLow();
 			LED_60_SetLow();
 		    LED_80_SetLow();
-
-
 		 break;
+
+		
 
 		 default :
 		 	 
@@ -198,30 +175,23 @@ static void LEDDispalayBattery_Power(battery_id batid)
 void DisplayBattery_Power_Estimate(void)
 {
    
-  if(adc_t.adcValue < 30 ){
-	  LEDDispalayBattery_Power(battery_20);
-	  
-  }
-  else if(adc_t.adcValue < 32 && adc_t.adcValue >=30){ //half of battery value
+   if(adc_t.adcValue < 37 ){ //half of battery value
 		LEDDispalayBattery_Power(battery_40);
 
    }
-   else if(adc_t.adcValue >=32 && adc_t.adcValue < 35){
+   else if(adc_t.adcValue >=37 && adc_t.adcValue <40){
 	   LEDDispalayBattery_Power(battery_60);
 
    }
-   else if(adc_t.adcValue >=35 && adc_t.adcValue <37){
+   else if(adc_t.adcValue >=40 && adc_t.adcValue <42){
 		 LEDDispalayBattery_Power(battery_80);
 
    }
-   else if(adc_t.adcValue >=37 && adc_t.adcValue < 40){
+   else if(adc_t.adcValue >=42 ){
 		 LEDDispalayBattery_Power(battery_100);
 
    }
-   else  if(adc_t.adcValue >=40){
-		 LEDDispalayBattery_Power(battery_full);
-
-   	}
+  
 
    
 

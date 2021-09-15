@@ -63,7 +63,6 @@ void checkMode(uint8_t keyvalue)
 		   else if(lock6 !=1 ){
 		            lamp_t.lampColor = 0x80;
 					lamp_t.Power_On=0;
-					lamp_t.switch_dev=0;
 					MSP_EN_SetHigh() ;
 					
 			}
