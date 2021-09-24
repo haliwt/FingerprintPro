@@ -48,41 +48,40 @@ void main(void)
 
     while (1)
     {
-        
-        if(lamp_t.Power_On ==1){
-            MSP_EN_SetLow() ;
-          if(lamp_t.getMinutes15_flag ==1){
-               lamp_t.getMinutes15_flag =0;
-              // LAMP_ShutOff();
-               MSP_EN_SetHigh() ;
-               lamp_t.Power_On=0;
-           }
-           else{
-              if(lamp_t.switch_dev==0){
-                  if(tim0_t.tim0_noBatt_s>120)
+         
+          
+          if(BATT_DetectedGetValue()==1){//Battery be charing be detected
+                ADC_Battery_ConversionValue_Voltage();
+                DisplayBattery_Power_Estimate();
+                MP3428A_ENABLE_SetLow() ;
+          }
+          else{ //don't charing battery 
+          if(lamp_t.Power_On ==1){
+               MP3428A_ENABLE_SetLow() ;
+               if(lamp_t.getMinutes15_flag ==1 && BATT_DetectedGetValue()==0){
+                  lamp_t.getMinutes15_flag =0;
+                  // LAMP_ShutOff();
+                  MP3428A_DISABLE_SetHigh();
+                  lamp_t.Power_On=0;
+              }
+              if(lamp_t.switch_dev==0 &&  BATT_DetectedGetValue()==0 ){ //Display Battery of capacity
+                  if(tim0_t.tim0_noBatt_s>120 )
                        lamp_t.switch_dev++;
                   ADC_Battery_ConversionValue_Voltage();    
                   DisplayBattery_Power_Estimate();
                 
               }
-              if(BATT_DetectedGetValue()==1 ){//Battery be charing be detected
-                ADC_Battery_ConversionValue_Voltage();
-                DisplayBattery_Power_Estimate();
-              }
-              else{
-                if(tim0_t.tim0_noBatt_s>120){
-                    tim0_t.tim0_noBatt_s=0;
-                    ADC_Battery_ConversionValue_Voltage();    
-                    DisplayBattery_Power_Estimate();
-                }
-
-                
-              }
+              if(tim0_t.tim0_noBatt_s>120 && BATT_DetectedGetValue()==0 ){
+                  tim0_t.tim0_noBatt_s=0;
+                  ADC_Battery_ConversionValue_Voltage();    
+                  DisplayBattery_Power_Estimate();
+                  LowVotalge_Detected();
             }
-        } 
-       
-   
-      keyValue=  KEY_Scan();
+               
+          }
+               
+          } 
+        keyValue=  KEY_Scan();
         checkMode(keyValue);
         checkRun();
         

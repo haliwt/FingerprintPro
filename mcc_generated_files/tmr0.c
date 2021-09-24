@@ -95,13 +95,13 @@ void TMR0_ISR(void)
 /******************************************************************
    * 
    * Function Name:void TMR0_CallBack(void)
-   * Function : timer0 = 10ms ,postscaler=10 
-   * 
+   * Function : timer0 = 10ms ,postscaler=10,Tosc =0.125us 
+   * define Timer = (4*pre*poster*Tosc) *TMR0 =
    * 
 ******************************************************************/
 void TMR0_CallBack(void)
 {
-    // Add your custom callback code here
+    // Add your custom callback code here timer is 10ms
      static uint16_t temp_5s,temp;
      tim0_t.tim0_falg ++ ;
      temp_5s++;

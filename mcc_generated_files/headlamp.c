@@ -56,14 +56,14 @@ void checkMode(uint8_t keyvalue)
 			   
 	            lamp_t.Power_On=1;
 				lock6=1;
-				MSP_EN_SetLow() ;
+				MP3428A_ENABLE_SetLow() ;
 				i++;
 			   
 		   }
 		   else if(lock6 !=1 ){
 		            lamp_t.lampColor = 0x80;
 					lamp_t.Power_On=0;
-					MSP_EN_SetHigh() ;
+					MP3428A_DISABLE_SetHigh();
 					
 			}
 		   
@@ -349,7 +349,7 @@ void checkRun(void)
 	break;
 	
 	case 0x80:
-			 MSP_EN_SetHigh() ;
+			 MP3428A_DISABLE_SetHigh();
 	break;
 	
     default:
@@ -370,20 +370,8 @@ void checkRun(void)
 **************************************************************/
 void LAMP_ShutOff(void)
 {
-		ICXL6006_DISABLE() ;
-		TMR2_Stop();//TMR2_StartTimer();
-		lamp_t.lampWhichColor_ON_flag=noColor;
-		LAMP_GREEN_OFF();
-		LAMP_BLUE_OFF();
-		LAMP_WHITE_OFF();
-		LAMP_RED_OFF();
-
-		lamp_t.zeroflag=0;
-		lamp_t.lampColor= 0xfe;
-		lamp_t.lampPWM_ON=0;
-		lamp_t.lampPWM_adj=0;
-		DELAY_microseconds(500) ;
-		FAN_OFF_FUN();	
+	MP3428A_DISABLE_SetHigh();
+		
 }
 /**************************************************************
 	*

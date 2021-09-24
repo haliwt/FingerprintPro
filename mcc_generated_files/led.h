@@ -22,8 +22,8 @@
 
 
 
-//#define MSP_EN_SetHigh()            do { LATCbits.LATC3 = 1; } while(0)
-//#define MSP_EN_SetLow()             do { LATCbits.LATC3 = 0; } while(0)
+//#define MP3428A_DISABLE_SetHigh()           do { LATCbits.LATC3 = 1; } while(0)
+//#define MP3428A_ENABLE_SetLow()             do { LATCbits.LATC3 = 0; } while(0)
 
 typedef enum{
 
@@ -37,7 +37,7 @@ typedef enum{
 }battery_id;
 	
 void DisplayBattery_Power_Estimate(void);
-void LowVoltageAlarm(void);
 
+void LowVotalge_Detected(void);
 
 #endif 
