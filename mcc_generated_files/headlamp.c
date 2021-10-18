@@ -2,7 +2,7 @@
 #include "tmr2.h"
 #include "delay.h"
 #include "tmr0.h"
-#include "led.h"
+
 
 static uint8_t currLamp;
 static void PWM_DUTY_ADJ(void);
@@ -23,7 +23,6 @@ void LAMP_Init_Value(void)
 
 		LAMP_RED_OFF();
 		FAN_OFF_FUN();
-		ICXL6006_DISABLE() ;
         TMR2_Stop();//TMR2_StartTimer();
 		PWM3_LoadDutyValue(0x0);
         lamp_t.Power_On=1;
@@ -215,7 +214,7 @@ void checkRun(void)
 
 	switch(lamp_t.lampColor){
 	case 0: //turn off lamp 
-		ICXL6006_DISABLE() ;
+
 		TMR2_Stop();//TMR2_StartTimer();
 		lamp_t.lampWhichColor_ON_flag=noColor;
 		LAMP_GREEN_OFF();
@@ -223,7 +222,7 @@ void checkRun(void)
 		LAMP_WHITE_OFF();
 		LAMP_RED_OFF();
 
-		TX1REG = 0xff;
+		 PWM3_LoadDutyValue(0); 
 		lamp_t.zeroflag=1;
 		lamp_t.lampColor=0;
 		lamp_t.lampPWM_ON=0;
@@ -249,10 +248,10 @@ void checkRun(void)
 
 		LAMP_WHITE_ON();
 		FAN_ON_FUN();
-		ICXL6006_ENABLE() ;
+		//ICXL6006_ENABLE() ;
 		TMR2_StartTimer();
         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-       // TX1REG = 0xa8;
+     
 		
 	break;
 
@@ -267,7 +266,7 @@ void checkRun(void)
 		 LAMP_GREEN_ON();
 		 FAN_ON_FUN();
 
-		 ICXL6006_ENABLE() ;
+		 //ICXL6006_ENABLE() ;
 		 TMR2_StartTimer();
          PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 		// TX1REG = 0xa2;
@@ -283,16 +282,16 @@ void checkRun(void)
 
 		LAMP_BLUE_ON();
 		FAN_ON_FUN();
-		ICXL6006_ENABLE() ;
+		//ICXL6006_ENABLE() ;
 		TMR2_StartTimer();
         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-		//TX1REG = 0xa4;
+		
 
 	break;
 
 	case 0x08://KEY_RED
 	   
-       // TX1REG = 0xa8;
+     
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
 		LAMP_GREEN_OFF();
@@ -303,7 +302,7 @@ void checkRun(void)
 		LAMP_RED_ON();
 		FAN_ON_FUN();
 
-		ICXL6006_ENABLE() ;
+		//ICXL6006_ENABLE() ;
 		TMR2_StartTimer();
         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 
@@ -349,7 +348,7 @@ void checkRun(void)
 	break;
 	
 	case 0x80:
-			 MP3428A_DISABLE_SetHigh();
+        MP3428A_DISABLE_SetHigh();
 	break;
 	
     default:
@@ -459,3 +458,75 @@ void PowerOff_Fun(void)
 	LED_100_SetHigh();
 }
 
+/**************************************************************
+	*
+	*Function Name:void DispalayBattery_Power(uint8_t)
+	*Function: display battery power qunantity
+	*
+	*
+	*
+**************************************************************/
+void LowVotalge_Detected(void)
+{
+	ADC_Battery_ConversionValue_Voltage();
+	if(adc_t.adcValue < 30 || adc_t.adcValue==30){
+		 
+		 //LowVoltageAlarm();
+		
+	}
+    else {
+	   tim0_t.tim0_lowVoltage_flag =0;
+	}
+	
+}
+
+/****************************************************************************
+    *
+    * Function Name: void FAN_FUN(void)
+    * Function :
+    * Input Ref:NO
+    * Return Ref: key value
+    * 
+ ****************************************************************************/
+void FAN_ON_FUN(void)
+{
+   
+   FAN_EN_SetLow() ;
+}
+
+void FAN_OFF_FUN(void)
+{
+   FAN_EN_SetHigh();//FAN_RB5_SetHigh() ;
+}
+/**************************************************************
+	*
+	*Function Name:void DispalayBattery_Power(uint8_t)
+	*Function: display battery power qunantity
+	*
+	*
+	*
+**************************************************************/
+void DisplayBattery_Power_Estimate(void)
+{
+   
+   if(adc_t.adcValue < 37 ){ //half of battery value 37*2=7.4v
+		EUSART_BatteryCharging_TxData(0x28);//(battery_40);
+
+   }
+   else if(adc_t.adcValue >=37 && adc_t.adcValue <39){ // 39*2=7.8V
+	   EUSART_BatteryCharging_TxData(0x3c);//(battery_60);
+
+   }
+   else if(adc_t.adcValue >=39 && adc_t.adcValue <41){//
+		 EUSART_BatteryCharging_TxData(0x50);//(battery_80);
+
+   }
+   else if(adc_t.adcValue >=41 && adc_t.adcValue < 42 ){
+		 EUSART_BatteryCharging_TxData(0x5A);//(battery_90);
+
+   }
+   else if(adc_t.adcValue >=42){
+	    EUSART_BatteryCharging_TxData(0x64); //(battery_100);
+	   
+   }
+}

@@ -340,16 +340,16 @@ void ADC_Battery_ConversionValue_Voltage(void)
     temp2= (ADC_value * 50) >>2;
     
      D1 =  ADC_value >>2; //4870 ->4
-     TX1REG = D1;
-     DELAY_microseconds(200);
-     TX1REG = 0xAA;
+     //TX1REG = D1;
+    // DELAY_microseconds(200);
+     //TX1REG = 0xAA;
      DELAY_microseconds(200);
      
    
      D2 = temp2>>8;
 	 adc_t.adcValue = D2;
-     TX1REG = D2;
-     DELAY_microseconds(200);
+     //TX1REG = D2;
+    // DELAY_microseconds(200);
      ADCC_StopConversion();
 	 
      
