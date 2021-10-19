@@ -23,8 +23,8 @@ void LAMP_Init_Value(void)
 
 		LAMP_RED_OFF();
 		FAN_OFF_FUN();
-        TMR2_Stop();//TMR2_StartTimer();
-		PWM3_LoadDutyValue(0x0);
+        TMR2_StartTimer();
+		PWM3_LoadDutyValue(0x9F); //100%
         lamp_t.Power_On=1;
 }
 /***************************************************************************
@@ -81,7 +81,8 @@ void checkMode(uint8_t keyvalue)
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-				TMR2_Stop();//TMR2_StartTimer();
+				TMR2_StartTimer();
+				PWM3_LoadDutyValue(0x9F); //100%
 				FAN_OFF_FUN();
 				tim0_t.tim0_FunStart_flag=0;
 				tim0_t.tim0_fun_30s=0;
@@ -111,7 +112,8 @@ void checkMode(uint8_t keyvalue)
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-				TMR2_Stop();//TMR2_StartTimer();
+				TMR2_StartTimer();
+				PWM3_LoadDutyValue(0x9F); //100%
 				FAN_OFF_FUN();
 				tim0_t.tim0_FunStart_flag=0;
 				tim0_t.tim0_fun_30s=0;
@@ -139,7 +141,8 @@ void checkMode(uint8_t keyvalue)
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-				TMR2_Stop();//TMR2_StartTimer();
+				TMR2_StartTimer();
+				PWM3_LoadDutyValue(0x9F); //100%
 				FAN_OFF_FUN();
 				tim0_t.tim0_FunStart_flag=0;
 				tim0_t.tim0_fun_30s=0;
@@ -166,7 +169,8 @@ void checkMode(uint8_t keyvalue)
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-				TMR2_Stop();//TMR2_StartTimer();
+				TMR2_StartTimer();
+				PWM3_LoadDutyValue(0x9F); //100%
 				FAN_OFF_FUN();
 				tim0_t.tim0_FunStart_flag=0;
 				tim0_t.tim0_fun_30s=0;
@@ -215,14 +219,15 @@ void checkRun(void)
 	switch(lamp_t.lampColor){
 	case 0: //turn off lamp 
 
-		TMR2_Stop();//TMR2_StartTimer();
+		//TMR2_Stop();//TMR2_StartTimer();
 		lamp_t.lampWhichColor_ON_flag=noColor;
 		LAMP_GREEN_OFF();
 		LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
 		LAMP_RED_OFF();
 
-		 PWM3_LoadDutyValue(0); 
+		 TMR2_StartTimer();
+		 PWM3_LoadDutyValue(0x9F); //100%
 		lamp_t.zeroflag=1;
 		lamp_t.lampColor=0;
 		lamp_t.lampPWM_ON=0;
@@ -506,27 +511,75 @@ void FAN_OFF_FUN(void)
 	*
 	*
 **************************************************************/
-void DisplayBattery_Power_Estimate(void)
+void BatteryCharing_Power_Estimate(void)
 {
    
-   if(adc_t.adcValue < 37 ){ //half of battery value 37*2=7.4v
-		EUSART_BatteryCharging_TxData(0x28);//(battery_40);
+   if(adc_t.adcValue < 36 ){ //half of battery value 37*2=7.4v
+		EUSART_BatteryCharging_TxData(0x01);//(battery_40);
 
    }
-   else if(adc_t.adcValue >=37 && adc_t.adcValue <39){ // 39*2=7.8V
-	   EUSART_BatteryCharging_TxData(0x3c);//(battery_60);
+   else if(adc_t.adcValue >=36 && adc_t.adcValue <38){ // 39*2=7.8V
+	   EUSART_BatteryCharging_TxData(0x02);//(battery_60);
 
    }
-   else if(adc_t.adcValue >=39 && adc_t.adcValue <41){//
-		 EUSART_BatteryCharging_TxData(0x50);//(battery_80);
+   else if(adc_t.adcValue >=38 && adc_t.adcValue <40){//
+		 EUSART_BatteryCharging_TxData(0x03);//(battery_80);
 
    }
-   else if(adc_t.adcValue >=41 && adc_t.adcValue < 42 ){
-		 EUSART_BatteryCharging_TxData(0x5A);//(battery_90);
+   else if(adc_t.adcValue >=40 && adc_t.adcValue < 42 ){
+		 EUSART_BatteryCharging_TxData(0x04);//(battery_90);
 
    }
-   else if(adc_t.adcValue >=42){
-	    EUSART_BatteryCharging_TxData(0x64); //(battery_100);
+   else if(adc_t.adcValue ==42 ){
+		 EUSART_BatteryCharging_TxData(0x05);//(battery_90);
+
+   }
+   else if(adc_t.adcValue >42){
+	    EUSART_BatteryCharging_TxData(0x06); //(battery_100);
 	   
    }
 }
+/**************************************************************
+	*
+	*Function Name:void DispalayBattery_Power(uint8_t)
+	*Function: display battery power qunantity
+	*
+	*
+	*
+**************************************************************/
+void BatteryWorks_Power_Estimate(void)
+{
+   
+   if(adc_t.adcValue < 36 ){ //half of battery value 37*2=7.4v
+		//BatteryWoks_TxData(0x01);//(battery_40);
+		EUSART_BatteryWorks_TxData(0x01);
+
+   }
+   else if(adc_t.adcValue >=36 && adc_t.adcValue <38){ // 39*2=7.8V
+	  // BatteryWoks_TxData(0x02);//(battery_60);
+	  EUSART_BatteryWorks_TxData(0x02);
+
+   }
+   else if(adc_t.adcValue >=38 && adc_t.adcValue <40){//
+		// BatteryWorks_TxData(0x03);//(battery_80);
+		EUSART_BatteryWorks_TxData(0x03);
+
+   }
+   else if(adc_t.adcValue >=40 && adc_t.adcValue < 42 ){
+		// BatteryWorks_TxData(0x04);//(battery_90);
+		EUSART_BatteryWorks_TxData(0x04);
+
+   }
+   else if(adc_t.adcValue ==42  ){
+		// BatteryWorks_TxData(0x04);//(battery_90);
+		EUSART_BatteryWorks_TxData(0x05);
+
+   }
+   else if(adc_t.adcValue >42  ){
+		// BatteryWorks_TxData(0x04);//(battery_100);
+		EUSART_BatteryWorks_TxData(0x06);
+
+   }
+  
+}
+

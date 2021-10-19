@@ -64,5 +64,6 @@ void PowerOff_Fun(void);
 void LowVotalge_Detected(void);
 void FAN_ON_FUN(void);
 void FAN_OFF_FUN(void);
-void DisplayBattery_Power_Estimate(void);
+void BatteryCharing_Power_Estimate(void);
+void BatteryWorks_Power_Estimate(void);
 #endif 

@@ -54,13 +54,15 @@
 /**********************************************************************************
 	* 
     *PWM of Duty formula = (pwm of duty Cycle)/(prescale * Tosc) *100%
-    *   pwm3 of pwerid is Timer2 period =0.1ms , Timer2 prescale =1,Tosc=1/8MHz=0.125us
-    *   100% Duty = (0.1ms)/(1*0.125*10^-3)=800-1=799 
-    *   50%  Duty = 800*50%=800/2=400-1=399
+    *   pwm3 of pwerid is Timer2 period =0.02ms , Timer2 prescale =1,Tosc=1/8MHz=0.125us
+    *   PWM of Duty formula = (pwm of duty Cycle )/(prescale * Tosc) *100%
+    *   100% Duty = (0.02ms)/(1*0.125*10^-3)=160-1=159 =0x9f
+    *   50%  Duty = 160*50%=80-1=79 = PWM3DCH:PWM3DCL = [0X13 : 0XC0]
 	*
 **********************************************************************************/
  /**
    Section: PWM Module APIs
+   50% Dtuy 79
  */
 
  void PWM3_Initialize(void)
@@ -82,10 +84,10 @@
 	 * 
 	 *Function Name:void PWM3_LoadDutyValue(uint16_t dutyValue)
 	 *PWM of Duty formula = (pwm of duty Cycle )/(prescale * Tosc) *100%
-	 *	 pwm3 of pwerid is Timer2 period =0.1ms , Timer2 prescale =1
-	 *	 100% Duty = (0.1ms)/(1*0.125*10^-3)=800-1=799 
-	 *	 50%  Duty = 800*50%=800/2=400-1=399
-	 *   40%  Duty = 800 *40% =320= 320-1=319
+	 *	 pwm3 of pwerid is Timer2 period =0.02ms , Timer2 prescale =1
+	 *	 100% Duty = (0.02ms)/(1*0.125*10^-3)=160-1=159 
+	 *	 50%  Duty = 160*50%=80-1=79
+	 *   40%  Duty = 160 *40% =64-1=63
 	 *
 **********************************************************************************/
 void PWM3_LoadDutyValue(uint16_t dutyValue)

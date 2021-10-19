@@ -55,10 +55,12 @@ void EUSART_InputCmd_Run(void)
 	
 }
 /******************************************************************************
- * 
- *Function Name: EUSART_TxData(uint8_t index) 
- * 
- * 
+	 * 
+	 * Function Name: void EUSART_BatteryWorks_TxData(uint8_t index)
+	 * Function:has a battery for works don't has adapter
+	 * Input Ref: battery quntity of value voltagle
+	 * Return Ref:NO
+	 *
  *****************************************************************************/
 void EUSART_BatteryWorks_TxData(uint8_t index)
 {
@@ -93,10 +95,10 @@ void EUSART_BatteryCharging_TxData(uint8_t index)
 {
    
 
-	outputBuf[0]='B'; //0x46
-	outputBuf[1]='A'; //0x50
-	outputBuf[2]='T'; //0x42	// 'M' for motor board
-    outputBuf[3]='T';
+	outputBuf[0]='B'; //0x42
+	outputBuf[1]='A'; //0x41
+	outputBuf[2]='T'; //0x54	// 'M' for motor board
+    outputBuf[3]='T'; //0x54
 	outputBuf[4]=index+0x30;	// change to ascii number for decimal number 0~9
    if(run_t.eusartTx_flag ==0){
    	   PIE3bits.TXIE=0;
@@ -111,6 +113,7 @@ void EUSART_BatteryCharging_TxData(uint8_t index)
    	}
    
 }
+
 /******************************************************************************
  * 
  *Function Name: void EUSART_BatteryCharging_TxData(uint8_t index)
@@ -121,10 +124,10 @@ void EUSART_Adapter_TxData(uint8_t index)
 {
    
 
-	outputBuf[0]='B'; //0x46
-	outputBuf[1]='A'; //0x50
-	outputBuf[2]='T'; //0x42	// 'M' for motor board
-    outputBuf[3]='A';
+	outputBuf[0]='B'; //0x42
+	outputBuf[1]='A'; //0x41
+	outputBuf[2]='T'; //0x54	// 'M' for motor board
+    outputBuf[3]='A'; //0x41
 	outputBuf[4]=index+0x30;	// change to ascii number for decimal number 0~9
    if(run_t.eusartTx_flag ==0){
    	   PIE3bits.TXIE=0;
@@ -156,7 +159,7 @@ void RxData_EUSART(void)
         PIE3bits.TX1IE = 0;
 		if(i==0){
 			
-			if(inputBuf[0]=='F'){
+			if(inputBuf[0]=='F'){ //0x46
 	            // TX1REG = inputBuf[0];//recdata[i]; // ???????? // ??
                  
 			}
@@ -164,7 +167,7 @@ void RxData_EUSART(void)
 		}
 		else if(i==1){
             
-	        if(inputBuf[1]=='P'){
+	        if(inputBuf[1]=='P'){ //0x50
 	           //  TX1REG = inputBuf[1];//recdata[i]; // ???????? // ??
             }
             else i=0;

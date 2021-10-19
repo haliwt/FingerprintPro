@@ -50,12 +50,12 @@ void main(void)
     {
         
        
-         if(DET_BATT_GetValue()==1){//Battery be charing be detected
+         if(DET_BATT_GetValue()==1){//Battery be charing be detected + adapter
                 ADC_Battery_ConversionValue_Voltage();
-                DisplayBattery_Power_Estimate();
+                BatteryCharing_Power_Estimate();
                 MP3428A_EN_SetLow() ;
           }
-          else{ //don't charing battery 
+          else{ //Battery don't charing 
             if(lamp_t.Power_On ==1){
                 MP3428A_EN_SetLow() ;
                 if(lamp_t.getMinutes15_flag ==1){
@@ -68,13 +68,13 @@ void main(void)
                     if(tim0_t.tim0_noBatt_s>120 )
                         lamp_t.switch_dev++;
                     ADC_Battery_ConversionValue_Voltage();    
-                    DisplayBattery_Power_Estimate();
+                    BatteryWorks_Power_Estimate();
                   
                 }
                 if(tim0_t.tim0_noBatt_s>120 ){
                     tim0_t.tim0_noBatt_s=0;
                     ADC_Battery_ConversionValue_Voltage();    
-                    DisplayBattery_Power_Estimate();
+                    BatteryWorks_Power_Estimate();
                     LowVotalge_Detected();
               }
                 

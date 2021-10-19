@@ -59,7 +59,8 @@
 /*******************************************************************************************
 	*
 	*Function Name:void TMR2_Initialize(void)
-	*Function: Timer PR2 :prescale = 1,Timer2(period)=0.02ms(50KHz),Tosc =1/8Mhz =0.125us
+	*Function: Timer2(period)=0.02ms(50KHz) 
+	*          Timer PR2 :prescale = 1,Tosc =1/8Mhz =0.125us
 	*          PR2 = (T2 period)/(4*prescale*Tosc)= 0.02/(4*1*0.125*10^-3)=40-1=39(0x27)
 	*
 	*
