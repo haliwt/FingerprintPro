@@ -3,7 +3,8 @@
 
 #include "mcc.h"
 
-
+#define LAMP_BLUE_OFF() 				    do { LATAbits.LATA3 = 0; } while(0)
+#define LAMP_BLUE_ON()  			        do { LATAbits.LATA3 = 1; } while(0) //EDIT WHITE->BLUE
 
 
 #define LAMP_WHITE_OFF() 				  do { LATAbits.LATA4 = 0; } while(0)   //
@@ -15,12 +16,11 @@
 #define LAMP_GREEN_OFF() 				  do { LATAbits.LATA7 = 0; } while(0)
 #define LAMP_GREEN_ON()  				  do { LATAbits.LATA7 = 1; } while(0) //EDIT BLUE->GREEN
 
-#define LAMP_BLUE_OFF() 				    do { LATAbits.LATA3 = 0; } while(0)
-#define LAMP_BLUE_ON()  			        do { LATAbits.LATA3 = 1; } while(0) //EDIT WHITE->BLUE
+
 
     
 
-#define DUTY_MAX_LEVE                 79//50KHz //399  //50%
+#define DUTY_MAX_LEVE                (128-1)  //50KHz //79  //50%
 #define DUTY_MIN_LEVEL                10
 #define DUTY_STEP_LEVEL               10
 

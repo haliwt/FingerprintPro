@@ -16,7 +16,7 @@ static void PWM_DUTY_ADJ(void);
 ****************************************************************************/
 void LAMP_Init_Value(void)
 {
-        lamp_t.pwmDuty =29;
+        lamp_t.pwmDuty =79;
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
@@ -35,6 +35,7 @@ void LAMP_Init_Value(void)
 	*Return Ref:NO
 	*
 ****************************************************************************/
+#if 0
 void checkMode(uint8_t keyvalue)
 {
 	static uint16_t i=0;
@@ -205,6 +206,7 @@ void checkMode(uint8_t keyvalue)
 	   break;
    }
 }
+#endif 
 /**************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
@@ -213,9 +215,10 @@ void checkMode(uint8_t keyvalue)
 	*Return Ref:NO
 	*
 **************************************************************/
+#if 1
 void checkRun(void)
 {
-
+    static uint8_t redflag,greeflag,blueflag,whiteflag;
 	switch(lamp_t.lampColor){
 	case 0: //turn off lamp 
 
@@ -240,32 +243,27 @@ void checkRun(void)
 			
 	break;
 
-    case 0x01: //KEY_WHITE
+      case 0x57: //"White"
         
 	
 	//	TX1REG = 0xa1;
 	
 	     lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
-		LAMP_GREEN_OFF();
-		LAMP_BLUE_OFF();
-		LAMP_RED_OFF();
+		
 
 		LAMP_WHITE_ON();
 		FAN_ON_FUN();
-		//ICXL6006_ENABLE() ;
 		TMR2_StartTimer();
         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
      
 		
 	break;
 
-	case 0x02: //KEY_GREEN
+	 case 0x47:  //"Green"
 	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
-		LAMP_BLUE_OFF();
-		LAMP_WHITE_OFF();
-		LAMP_RED_OFF();
+
 	
 
 		 LAMP_GREEN_ON();
@@ -278,12 +276,10 @@ void checkRun(void)
 
 	break;
 
-	case 0x04://KEY_BLUE
+	case 0x42: //"Blue"
 	    lamp_t.lampWhichColor_ON_flag = Blue;
 		lamp_t.zeroflag=2;
-		LAMP_GREEN_OFF();
-		LAMP_WHITE_OFF();
-		LAMP_RED_OFF();
+	
 
 		LAMP_BLUE_ON();
 		FAN_ON_FUN();
@@ -294,20 +290,17 @@ void checkRun(void)
 
 	break;
 
-	case 0x08://KEY_RED
+	 case 0x52: //"R" rend Led//0x08://KEY_RED
 	   
      
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
-		LAMP_GREEN_OFF();
-		LAMP_BLUE_OFF();
-		LAMP_WHITE_OFF();
+	
 		
 		
 		LAMP_RED_ON();
 		FAN_ON_FUN();
 
-		//ICXL6006_ENABLE() ;
 		TMR2_StartTimer();
         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
 
@@ -321,6 +314,8 @@ void checkRun(void)
 				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) 
 					lamp_t.pwmDuty= DUTY_MAX_LEVE;
 				else lamp_t.pwmDuty =lamp_t.pwmDuty + DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) lamp_t.pwmDuty= DUTY_MAX_LEVE;
 
 			 PWM3_LoadDutyValue(lamp_t.pwmDuty);
 			 
@@ -339,10 +334,13 @@ void checkRun(void)
 		  if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) 
 		   		lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
 		  else lamp_t.pwmDuty = lamp_t.pwmDuty - DUTY_STEP_LEVEL ;
+		  
+		   if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
+		  
    
 		  PWM3_LoadDutyValue(lamp_t.pwmDuty);
 		  lamp_t.lampColor= 0x40;
-		   lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
+		  lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
 		  
 		 TX1REG = 0x2a;
 		 }
@@ -364,6 +362,7 @@ void checkRun(void)
    }
 
 }
+#endif 
 /**************************************************************
 	*
 	*Function Name:void LAMP_ShutOff(void)
@@ -400,7 +399,7 @@ static void PWM_DUTY_ADJ(void)
 				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-				//ICXL6006_ENABLE() ;
+				
 			
 			break;
 			
@@ -414,7 +413,7 @@ static void PWM_DUTY_ADJ(void)
 				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-				//ICXL6006_ENABLE() ;
+				
 			
 			break;
 			
@@ -428,7 +427,7 @@ static void PWM_DUTY_ADJ(void)
 				FAN_ON_FUN();
 				//TMR2_StartTimer();
 				PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-				//ICXL6006_ENABLE() ;
+			
 			
 			break;
 			
@@ -443,7 +442,7 @@ static void PWM_DUTY_ADJ(void)
 			
 			//TMR2_StartTimer();
 			PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-			//ICXL6006_ENABLE() ;
+		
 			
 			break;
 			

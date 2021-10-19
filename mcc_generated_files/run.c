@@ -15,28 +15,58 @@ void EUSART_InputCmd_Run(void)
 	
     switch (run_t.InputOrder[0])
     {
-        case 0xff: //power Off 
+        case 0x4f: //power Off 
             /* code */
                 lamp_t.lampColor= 0x80;
             break;
             
         case 0x52: //"R" rend Led
-           lamp_t.lampColor= 0x08;
+	        LAMP_GREEN_OFF();
+			LAMP_BLUE_OFF();
+			LAMP_WHITE_OFF();
+			LAMP_RED_OFF();
+			TMR2_StartTimer();
+			PWM3_LoadDutyValue(0x9F); //100%
+			FAN_OFF_FUN();
+		
+           lamp_t.lampColor= 0x52;
         break;
         
         case 0x47:  //"Green"
-             lamp_t.lampColor= 0x02;
+        	LAMP_GREEN_OFF();
+			LAMP_BLUE_OFF();
+			LAMP_WHITE_OFF();
+			LAMP_RED_OFF();
+			TMR2_StartTimer();
+			PWM3_LoadDutyValue(0x9F); //100%
+			FAN_OFF_FUN();
+             lamp_t.lampColor= 0x47;
         break;
         
         case 0x42: //"Blue"
-           lamp_t.lampColor= 0x03;
+            LAMP_GREEN_OFF();
+			LAMP_BLUE_OFF();
+			LAMP_WHITE_OFF();
+			LAMP_RED_OFF();
+			TMR2_StartTimer();
+			PWM3_LoadDutyValue(0x9F); //100%
+			FAN_OFF_FUN();
+           lamp_t.lampColor= 0x42;
         break;
         
         case 0x57: //"White"
-             lamp_t.lampColor= 0x01; //KEY_WHITE
+            LAMP_GREEN_OFF();
+			LAMP_BLUE_OFF();
+			LAMP_WHITE_OFF();
+			LAMP_RED_OFF();
+			TMR2_StartTimer();
+			PWM3_LoadDutyValue(0x9F); //100%
+			FAN_OFF_FUN();
+             lamp_t.lampColor= 0x57; //KEY_WHITE
         break;
         
         case 0x01: //lamp "+"
+        
             lamp_t.lampColor= 0x20;
         
         break;
