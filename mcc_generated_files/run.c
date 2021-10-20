@@ -28,6 +28,7 @@ void EUSART_InputCmd_Run(void)
 			TMR2_StartTimer();
 			PWM3_LoadDutyValue(0x9F); //100%
 			FAN_OFF_FUN();
+			DELAY_microseconds(500);
 		
            lamp_t.lampColor= 0x52;
         break;
@@ -40,6 +41,7 @@ void EUSART_InputCmd_Run(void)
 			TMR2_StartTimer();
 			PWM3_LoadDutyValue(0x9F); //100%
 			FAN_OFF_FUN();
+			DELAY_microseconds(500);
              lamp_t.lampColor= 0x47;
         break;
         
@@ -51,6 +53,7 @@ void EUSART_InputCmd_Run(void)
 			TMR2_StartTimer();
 			PWM3_LoadDutyValue(0x9F); //100%
 			FAN_OFF_FUN();
+			DELAY_microseconds(500);
            lamp_t.lampColor= 0x42;
         break;
         
@@ -62,20 +65,24 @@ void EUSART_InputCmd_Run(void)
 			TMR2_StartTimer();
 			PWM3_LoadDutyValue(0x9F); //100%
 			FAN_OFF_FUN();
+			DELAY_microseconds(500);
             lamp_t.lampColor= 0x57; //KEY_WHITE
         break;
         
         case 0x01: //lamp "+"
+        	DELAY_microseconds(500);
         
             lamp_t.lampColor= 0x20;
         
         break;
         
         case 0x02: //lamp "-"
+        		DELAY_microseconds(500);
              lamp_t.lampColor= 0x10;
         break;
         
         case 0x3f: //"Close" ,turn off LED
+            DELAY_microseconds(500);
             lamp_t.lampColor= 0;
         break; 
     
