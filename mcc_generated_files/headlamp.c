@@ -49,7 +49,10 @@ void checkRun(void)
 {
     static uint8_t redflag,greeflag,blueflag,whiteflag;
 	switch(lamp_t.lampColor){
-	case 0: //turn off lamp 
+
+	  if(lamp_t.lampColor ==0)return;
+	  
+	case 0x3f: //turn off lamp 
 
 		//TMR2_Stop();//TMR2_StartTimer();
 		lamp_t.lampWhichColor_ON_flag=noColor;

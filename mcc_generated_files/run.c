@@ -15,7 +15,7 @@ void EUSART_InputCmd_Run(void)
 	
     switch (run_t.InputOrder[0])
     {
-        case 0x4f: //power Off 
+        case 0x5A: //power Off 
             /* code */
                 lamp_t.lampColor= 0x80;
             break;
@@ -83,7 +83,7 @@ void EUSART_InputCmd_Run(void)
         
         case 0x3f: //"Close" ,turn off LED
             DELAY_microseconds(500);
-            lamp_t.lampColor= 0;
+            lamp_t.lampColor= 0x3f;
         break; 
     
        default:

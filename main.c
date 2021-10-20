@@ -49,7 +49,7 @@ void main(void)
     while (1)
     {
         
-       
+          MP3428A_EN_SetLow() ;
          if(DET_BATT_GetValue()==1){//Battery be charing be detected + adapter
                 ADC_Battery_ConversionValue_Voltage();
                 BatteryCharing_Power_Estimate();
