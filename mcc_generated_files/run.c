@@ -62,7 +62,7 @@ void EUSART_InputCmd_Run(void)
 			TMR2_StartTimer();
 			PWM3_LoadDutyValue(0x9F); //100%
 			FAN_OFF_FUN();
-             lamp_t.lampColor= 0x57; //KEY_WHITE
+            lamp_t.lampColor= 0x57; //KEY_WHITE
         break;
         
         case 0x01: //lamp "+"

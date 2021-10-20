@@ -3,9 +3,14 @@
 #include "delay.h"
 #include "tmr0.h"
 
-
+uint8_t pwmDutyArray[4];
 static uint8_t currLamp;
 static void PWM_DUTY_ADJ(void);
+static void ADJ_LampBrightnessADD(void);
+static void ADJ_LampBrightnessSUB(void);
+static void setLevel_RED_PWM(uint8_t level);
+static void setLevel_BLUE_PWM(uint8_t level);
+
 /***************************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
@@ -17,6 +22,10 @@ static void PWM_DUTY_ADJ(void);
 void LAMP_Init_Value(void)
 {
         lamp_t.pwmDuty =79;
+		lamp_t.red_pwmDuty=79;
+		lamp_t.green_pwmDuty=79;
+		lamp_t.blue_pwmDuty=79;
+		lamp_t.white_pwmDuty=79;
 		LAMP_GREEN_OFF();
 	    LAMP_BLUE_OFF();
 		LAMP_WHITE_OFF();
@@ -27,186 +36,6 @@ void LAMP_Init_Value(void)
 		PWM3_LoadDutyValue(0x9F); //100%
         lamp_t.Power_On=1;
 }
-/***************************************************************************
-	*
-	*Function Name:void CheckMode(uint8_t value)
-	*Function: The first input LED ON,the second input key LED OFF
-	*Input Ref:key be pressed of value
-	*Return Ref:NO
-	*
-****************************************************************************/
-#if 0
-void checkMode(uint8_t keyvalue)
-{
-	static uint16_t i=0;
-    static uint8_t inputKey_red=0xff,inputKey_green=0xff,inputKey_blue=0xff,inputKey_white=0xff,powerflag=0;
-	uint8_t lock=0,lock_k=0,lock2=0,lock3=0,lock4=0,lock5=0,lock6=0;
-	switch(keyvalue){
-       case 0:
-
-	     if(!keyvalue)
-		  	return ;
-		  
-		
-	   break;
-	   
-	   case 0x40: //POWER ON and off
-	       powerflag = powerflag ^ 0x01;
-	       if(powerflag ==1){
-			   
-	            lamp_t.Power_On=1;
-				lock6=1;
-				MP3428A_ENABLE_SetLow() ;
-				i++;
-			   
-		   }
-		   else if(lock6 !=1 ){
-		            lamp_t.lampColor = 0x80;
-					lamp_t.Power_On=0;
-					MP3428A_DISABLE_SetHigh();
-					
-			}
-		   
-				
-			 
-		break;
-   
-	   case 0x1: //KEY_WHITE
-         
-		  if(inputKey_white !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Red){
-			   lamp_t.lampColor = 0x01;
-			   inputKey_white = lamp_t.lampColor;
-		       lock =1;
-			    ICXL6006_DISABLE() ;
-			    LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-				TMR2_StartTimer();
-				PWM3_LoadDutyValue(0x9F); //100%
-				FAN_OFF_FUN();
-				tim0_t.tim0_FunStart_flag=0;
-				tim0_t.tim0_fun_30s=0;
-				DELAY_microseconds(500) ;
-			    
-				
-			}
-			else if(lock !=1) {
-				TX1REG = 0x01;
-				 lamp_t.lampColor=0;
-				lamp_t.zeroflag=0;
-				lock_k=2;
-				lamp_t.lampPWM_ON=0;
-				
-			}
-   
-	   break;
-   
-	   case 0x02: //KEY_GREEN
-	     
-		  if(inputKey_blue !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Green){
-			  lamp_t.lampColor = 0x02;
-			  inputKey_blue = lamp_t.lampColor;
-		        lock2 =1;
-				ICXL6006_DISABLE() ;
-				LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-				TMR2_StartTimer();
-				PWM3_LoadDutyValue(0x9F); //100%
-				FAN_OFF_FUN();
-				tim0_t.tim0_FunStart_flag=0;
-				tim0_t.tim0_fun_30s=0;
-				DELAY_microseconds(500) ;
-			 
-		 }
-		 else if(lock2 !=1) {
-			    TX1REG = 0x02;
-		  	   lamp_t.lampColor=0;
-				lamp_t.zeroflag=0;
-				lock_k=2;
-				lamp_t.lampPWM_ON=0;
-		  	}
-   
-	   break;
-   
-	   case 0x04://KEY_BLUE
-	     
-		  if(inputKey_green != lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=Blue){
-		  	lamp_t.lampColor = 0x04;
-			inputKey_green = lamp_t.lampColor;
-			   lock3 =1;
-                ICXL6006_DISABLE() ;
-			   	LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-				TMR2_StartTimer();
-				PWM3_LoadDutyValue(0x9F); //100%
-				FAN_OFF_FUN();
-				tim0_t.tim0_FunStart_flag=0;
-				tim0_t.tim0_fun_30s=0;
-				DELAY_microseconds(500) ;
-			}
-		  else if(lock3 !=1) {
-			  TX1REG = 0x04;
-		  	  lamp_t.lampColor=0;
-			  lamp_t.zeroflag=0;
-			  lock_k=2;
-			  lamp_t.lampPWM_ON=0;
-			
-		  	}
-   
-	   break;
-   
-	   case 0x08://KEY_RED
-		   if(inputKey_red !=lamp_t.lampColor && lock_k!=2 && lamp_t.lampPWM_ON !=White){
-                 lamp_t.lampColor = 0x08;
-				inputKey_red = lamp_t.lampColor;
-			 	   lock4 =1;
-				ICXL6006_DISABLE() ;
-				LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-				TMR2_StartTimer();
-				PWM3_LoadDutyValue(0x9F); //100%
-				FAN_OFF_FUN();
-				tim0_t.tim0_FunStart_flag=0;
-				tim0_t.tim0_fun_30s=0;
-				DELAY_microseconds(500) ;
-		   }
-		   else if(lock4 !=1) {
-			   TX1REG = 0x08;
-		   	  lamp_t.lampColor=0;
-			   lamp_t.zeroflag=0;
-			   lock_k=2;
-			   lamp_t.lampPWM_ON=0;
-		   	}
-   
-	   break;
-   
-   
-	   case 0x10: //KEY_ADD "-"
-          TX1REG = 0x10;
-	      lamp_t.lampColor = 0x10;
-   
-	   break;
-   
-	   case 0x20: //KEY_SUB "+"
-	      TX1REG = 0x20;
-          lamp_t.lampColor = 0x20;
-   
-	   break;
-   
-	   default:
-   
-   				
-	   break;
-   }
-}
-#endif 
 /**************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
@@ -243,19 +72,20 @@ void checkRun(void)
 			
 	break;
 
-      case 0x57: //"White"
+      case 0x57: //"White"------->'Blue'
         
 	
 	//	TX1REG = 0xa1;
 	
 	     lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
-		
+		lamp_t.white_pwmDuty = pwmDutyArray[3];
+		TMR2_StartTimer();
+        PWM3_LoadDutyValue(lamp_t.white_pwmDuty); //PWM cycle duty =50%
 
 		LAMP_WHITE_ON();
 		FAN_ON_FUN();
-		TMR2_StartTimer();
-        PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
+		
      
 		
 	break;
@@ -263,31 +93,29 @@ void checkRun(void)
 	 case 0x47:  //"Green"
 	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
-
-	
+		lamp_t.green_pwmDuty = pwmDutyArray[1];
+	     TMR2_StartTimer();
+         PWM3_LoadDutyValue(lamp_t.green_pwmDuty); //PWM cycle duty =50%
 
 		 LAMP_GREEN_ON();
 		 FAN_ON_FUN();
 
 		 //ICXL6006_ENABLE() ;
-		 TMR2_StartTimer();
-         PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
+		
 		// TX1REG = 0xa2;
 
 	break;
 
-	case 0x42: //"Blue"
+	case 0x42: //-> 'blue'
 	    lamp_t.lampWhichColor_ON_flag = Blue;
 		lamp_t.zeroflag=2;
-	
+		lamp_t.blue_pwmDuty = pwmDutyArray[2];
+	    TMR2_StartTimer();
+        PWM3_LoadDutyValue(lamp_t.blue_pwmDuty); //PWM cycle duty =50%
 
 		LAMP_BLUE_ON();
 		FAN_ON_FUN();
 		//ICXL6006_ENABLE() ;
-		TMR2_StartTimer();
-        PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-		
-
 	break;
 
 	 case 0x52: //"R" rend Led//0x08://KEY_RED
@@ -296,53 +124,31 @@ void checkRun(void)
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
 	
-		
-		
+		lamp_t.red_pwmDuty = pwmDutyArray[0];
+		TMR2_StartTimer();
+        PWM3_LoadDutyValue(lamp_t.red_pwmDuty); //PWM cycle duty =50%
 		LAMP_RED_ON();
 		FAN_ON_FUN();
-
-		TMR2_StartTimer();
-        PWM3_LoadDutyValue(lamp_t.pwmDuty); //PWM cycle duty =50%
-
-	break;
+      break;
 
 
 	case 0x20: //KEY_ADD "+"
-	       if(lamp_t.zeroflag==2){
-			FAN_OFF_FUN();
+	       if(lamp_t.zeroflag==2){//in process LED on status 
 
-				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) 
-					lamp_t.pwmDuty= DUTY_MAX_LEVE;
-				else lamp_t.pwmDuty =lamp_t.pwmDuty + DUTY_STEP_LEVEL ;
-				
-				if(lamp_t.pwmDuty >DUTY_MAX_LEVE) lamp_t.pwmDuty= DUTY_MAX_LEVE;
-
-			 PWM3_LoadDutyValue(lamp_t.pwmDuty);
-			 
-			 lamp_t.lampColor= 0x40;
-			 lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
+				ADJ_LampBrightnessADD();
 		
-		   TX1REG = 0x1a;
+		  // TX1REG = 0x1a;
 		   }
 
 	break;
 
 	case 0x10: //KEY_SUB "-"
          
-		 if(lamp_t.zeroflag==2){
-	      FAN_OFF_FUN();
-		  if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) 
-		   		lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
-		  else lamp_t.pwmDuty = lamp_t.pwmDuty - DUTY_STEP_LEVEL ;
+		 if(lamp_t.zeroflag==2){ //in process LED on status 
+	    
+		   ADJ_LampBrightnessSUB();
 		  
-		   if(lamp_t.pwmDuty < DUTY_MIN_LEVEL ) lamp_t.pwmDuty= DUTY_MIN_LEVEL ;
-		  
-   
-		  PWM3_LoadDutyValue(lamp_t.pwmDuty);
-		  lamp_t.lampColor= 0x40;
-		  lamp_t.lampPWM_adj = lamp_t.lampWhichColor_ON_flag;
-		  
-		 TX1REG = 0x2a;
+		// TX1REG = 0x2a;
 		 }
 	break;
 	
@@ -363,6 +169,230 @@ void checkRun(void)
 
 }
 #endif 
+/**************************************************************
+	*
+	*Function Name:static void ADJ_LampBrightnessADD(void)
+	*Function: 
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+**************************************************************/
+static void ADJ_LampBrightnessADD(void)
+{
+	 static uint8_t level_r,level_b;
+	  switch(lamp_t.lampWhichColor_ON_flag){
+
+	     case Red:
+
+	  			if(lamp_t.red_pwmDuty >GREEN_DUTY_MAX_LEVEL) 
+					lamp_t.red_pwmDuty=GREEN_DUTY_MAX_LEVEL;
+				else lamp_t.red_pwmDuty =lamp_t.red_pwmDuty + DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.red_pwmDuty >GREEN_DUTY_MAX_LEVEL) lamp_t.red_pwmDuty= GREEN_DUTY_MAX_LEVEL;
+				 pwmDutyArray[0] = lamp_t.red_pwmDuty ;
+
+			    PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
+				LAMP_BLUE_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_WHITE_OFF();
+			  
+                LAMP_RED_ON();
+
+	     break;
+
+		 case Green: //--OK
+		 	  if(lamp_t.green_pwmDuty >GREEN_DUTY_MAX_LEVEL) 
+					lamp_t.green_pwmDuty=GREEN_DUTY_MAX_LEVEL;
+				else lamp_t.green_pwmDuty =lamp_t.green_pwmDuty + DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.green_pwmDuty >GREEN_DUTY_MAX_LEVEL) lamp_t.green_pwmDuty= GREEN_DUTY_MAX_LEVEL;
+				 pwmDutyArray[1] = lamp_t.green_pwmDuty ;
+
+			    PWM3_LoadDutyValue(lamp_t.green_pwmDuty);
+
+				LAMP_BLUE_OFF();
+			    LAMP_RED_OFF();
+				LAMP_WHITE_OFF();
+				
+			    LAMP_GREEN_ON();
+
+		 break;
+
+		 case Blue: //---->"White"
+		 	   if(lamp_t.blue_pwmDuty >GREEN_DUTY_MAX_LEVEL) 
+					lamp_t.blue_pwmDuty=GREEN_DUTY_MAX_LEVEL;
+				else lamp_t.blue_pwmDuty =lamp_t.white_pwmDuty + DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.blue_pwmDuty >GREEN_DUTY_MAX_LEVEL) lamp_t.blue_pwmDuty= GREEN_DUTY_MAX_LEVEL;
+				 pwmDutyArray[2] = lamp_t.blue_pwmDuty ;
+
+			    PWM3_LoadDutyValue(lamp_t.blue_pwmDuty);
+				LAMP_RED_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_WHITE_OFF();
+			  
+				LAMP_BLUE_ON();
+
+		 break;
+
+		 case White:
+		 	 	 if(lamp_t.white_pwmDuty >GREEN_DUTY_MAX_LEVEL) 
+					lamp_t.white_pwmDuty=GREEN_DUTY_MAX_LEVEL;
+				else lamp_t.white_pwmDuty =lamp_t.white_pwmDuty + DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.white_pwmDuty >GREEN_DUTY_MAX_LEVEL) lamp_t.white_pwmDuty= GREEN_DUTY_MAX_LEVEL;
+				 pwmDutyArray[3] = lamp_t.white_pwmDuty ;
+
+			    PWM3_LoadDutyValue(lamp_t.white_pwmDuty);
+				LAMP_BLUE_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_RED_OFF();
+				
+				LAMP_WHITE_ON();
+
+		 break;
+
+		 default:
+
+		 break;
+
+
+	  }
+
+
+}
+
+/**************************************************************
+	*
+	*Function Name:static void ADJ_LampBrightnessSUB(void)
+	*Function: 
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+**************************************************************/
+static void ADJ_LampBrightnessSUB(void)
+{
+
+     static uint8_t level_r,level_b;
+	  switch(lamp_t.lampWhichColor_ON_flag){
+
+	     case Red:
+
+	       
+               if (level_r < LEVEL_MIN+LEVEL_STEP)
+                       level_r = LEVEL_MIN;
+			  else level_r -=LEVEL_STEP;
+                    
+		        setLevel_RED_PWM(level_r);
+				LAMP_BLUE_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_WHITE_OFF();
+			  
+                LAMP_RED_ON();
+			
+
+	     break;
+
+		 case Green: //
+		 	  if(lamp_t.green_pwmDuty < GREEN_DUTY_MIN_LEVEL ) 
+		   		  lamp_t.green_pwmDuty= GREEN_DUTY_MIN_LEVEL ;
+		      else lamp_t.green_pwmDuty = lamp_t.green_pwmDuty - DUTY_STEP_LEVEL ;
+		  
+		      if(lamp_t.green_pwmDuty < GREEN_DUTY_MIN_LEVEL ) lamp_t.green_pwmDuty= GREEN_DUTY_MIN_LEVEL ;
+		  
+                 PWM3_LoadDutyValue(lamp_t.green_pwmDuty);
+			    LAMP_BLUE_OFF();
+			    LAMP_RED_OFF();
+				LAMP_WHITE_OFF();
+				
+			    LAMP_GREEN_ON();
+			 
+		 break;
+
+		 case Blue:
+		 	   if (level_b < LEVEL_MIN+LEVEL_STEP)
+                       level_b = LEVEL_MIN;
+			  else level_b -=LEVEL_STEP;
+                    
+		        setLevel_BLUE_PWM(level_b);
+				LAMP_RED_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_WHITE_OFF();
+			  
+				LAMP_BLUE_ON();
+
+		 break;
+
+		 case White://0
+		 	 if(lamp_t.white_pwmDuty < WHITE_DUTY_MIN_LEVEL) 
+					lamp_t.white_pwmDuty=WHITE_DUTY_MIN_LEVEL;
+				else lamp_t.white_pwmDuty =lamp_t.white_pwmDuty - DUTY_STEP_LEVEL ;
+				
+				if(lamp_t.white_pwmDuty < WHITE_DUTY_MIN_LEVEL) lamp_t.white_pwmDuty= WHITE_DUTY_MIN_LEVEL;
+
+			    PWM3_LoadDutyValue(lamp_t.white_pwmDuty);
+
+				LAMP_BLUE_OFF();
+			    LAMP_GREEN_OFF();
+				LAMP_RED_OFF();
+				
+				LAMP_WHITE_ON();
+
+		 break;
+
+		 default:
+
+		 break;
+
+
+	  }
+
+
+}
+
+/*************************************************************************
+ 	*
+	*Function Name:static void setLevel_PWMA(uint8_t level)
+	*Function : hight voltagle
+	*Input Ref: NO
+	*Output Ref:No
+	*
+******************************************************************************/
+static void setLevel_RED_PWM(uint8_t level)
+{
+ 
+	if(level<LEVEL_MIN)level=LEVEL_MIN;
+	
+      lamp_t.red_pwmDuty =(level)*LEVEL_PWM_STEP;// level * LEVEL_PWM_STEP;
+      
+      if(lamp_t.red_pwmDuty< RED_DUTY_MIN_LEVEL)
+	  	      lamp_t.red_pwmDuty=RED_DUTY_MIN_LEVEL;
+	
+    if(lamp_t.red_pwmDuty > RED_DUTY_MAX_LEVEL){
+		lamp_t.red_pwmDuty= RED_DUTY_MAX_LEVEL;
+    }
+	PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
+	
+	
+}
+
+static void setLevel_BLUE_PWM(uint8_t level)
+{
+	if(level<LEVEL_MIN)level=LEVEL_MIN;
+	
+      lamp_t.blue_pwmDuty =(level)*LEVEL_PWM_STEP;// level * LEVEL_PWM_STEP;
+      
+      if(lamp_t.blue_pwmDuty< BLUE_DUTY_MIN_LEVEL)
+	  	      lamp_t.blue_pwmDuty=BLUE_DUTY_MIN_LEVEL;
+	
+    if(lamp_t.blue_pwmDuty > BLUE_DUTY_MAX_LEVEL){
+		lamp_t.blue_pwmDuty= BLUE_DUTY_MAX_LEVEL;
+    }
+	PWM3_LoadDutyValue(lamp_t.blue_pwmDuty);
+	
+	
+}
+
 /**************************************************************
 	*
 	*Function Name:void LAMP_ShutOff(void)
