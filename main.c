@@ -25,7 +25,7 @@
  */
 void main(void)
 {
-	  
+	  static uint8_t poweron;
     // Initialize the device
     SYSTEM_Initialize();
 
@@ -48,41 +48,9 @@ void main(void)
 
     while (1)
     {
-        
-          MP3428A_EN_SetLow() ;
-         if(DET_BATT_GetValue()==1){//Battery be charing be detected + adapter
-                ADC_Battery_ConversionValue_Voltage();
-                BatteryCharing_Power_Estimate();
-                MP3428A_EN_SetLow() ;
-          }
-          else{ //Battery don't charing 
-            if(lamp_t.Power_On ==1){
-                MP3428A_EN_SetLow() ;
-                if(lamp_t.getMinutes15_flag ==1){
-                    lamp_t.getMinutes15_flag =0;
-                    // LAMP_ShutOff();
-                    MP3428A_DISABLE_SetHigh();
-                    lamp_t.Power_On=0;
-                }
-                if(lamp_t.switch_dev==0  ){ //Display Battery of capacity
-                    if(tim0_t.tim0_noBatt_s>120 )
-                        lamp_t.switch_dev++;
-                    ADC_Battery_ConversionValue_Voltage();    
-                    BatteryWorks_Power_Estimate();
-                  
-                }
-                if(tim0_t.tim0_noBatt_s>120 ){
-                    tim0_t.tim0_noBatt_s=0;
-                    ADC_Battery_ConversionValue_Voltage();    
-                    BatteryWorks_Power_Estimate();
-                    LowVotalge_Detected();
-              }
-                
-            }
-          } 
-        EUSART_SetRxInterruptHandler(RxData_EUSART);
-        EUSART_InputCmd_Run();
-        checkRun();
+       EUSART_SetRxInterruptHandler(RxData_EUSART);
+       EUSART_InputCmd_Run();
+       checkRun();
      }
 }
 /**

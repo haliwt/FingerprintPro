@@ -21,22 +21,22 @@
 
 
 #define RED_DUTY_MAX_LEVEL                159  //50KHz //79  //80%
-#define RED_DUTY_MIN_LEVEL                47     //160*30% =48
+#define RED_DUTY_MIN_LEVEL                0     //160*30% =48
 
 
 
 
-#define GREEN_DUTY_MAX_LEVEL               (112-1)  //50KHz //70%
-#define GREEN_DUTY_MIN_LEVEL               31       //160*20%
+#define GREEN_DUTY_MAX_LEVEL               159  //50KHz //70%
+#define GREEN_DUTY_MIN_LEVEL               0       //160*20%
 
 
-#define WHITE_DUTY_MAX_LEVEL               95  //50KHz //60%
-#define WHITE_DUTY_MIN_LEVEL               47       //160*40%
+#define WHITE_DUTY_MAX_LEVEL               159  //50KHz //60%
+#define WHITE_DUTY_MIN_LEVEL              0       //160*40%
 
-#define BLUE_DUTY_MAX_LEVEL               159 //50KHz //70%
-#define BLUE_DUTY_MIN_LEVEL               47  // 79       //160*50%
+#define BLUE_DUTY_MAX_LEVEL               159//50KHz //70%
+#define BLUE_DUTY_MIN_LEVEL               0       //160*50%
 
-#define DUTY_STEP_LEVEL                     30
+#define DUTY_STEP_LEVEL                   20
 
 #define LEVEL_DEFAULT	  14
 #define LEVEL_MIN		   2//
@@ -87,9 +87,7 @@ void checkRun(void);
 void LAMP_Init_Value(void);
 void LAMP_ShutOff(void);
 void PowerOff_Fun(void);
-void LowVotalge_Detected(void);
 void FAN_ON_FUN(void);
 void FAN_OFF_FUN(void);
-void BatteryCharing_Power_Estimate(void);
-void BatteryWorks_Power_Estimate(void);
+
 #endif 

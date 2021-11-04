@@ -95,7 +95,7 @@ void TMR0_ISR(void)
 /******************************************************************
    * 
    * Function Name:void TMR0_CallBack(void)
-   * Function : timer0 = 10ms ,postscaler=10,Tosc =0.125us 
+   * Function :T(timer0) = 10ms ,postscaler=10,Tosc = 1/8MHz = 0.125us 
    * define Timer = (4*pre*poster*Tosc) *TMR0 =
    * 
 ******************************************************************/
@@ -107,12 +107,13 @@ void TMR0_CallBack(void)
      temp_5s++;
      if(temp_5s >99){ //1s
         temp_5s=0;
+        tim0_t.tim0_BattStatus++;
         tim0_t.tim0_noBatt_s++;
         tim0_t.tim0_autoShutOff_lamp++;
         tim0_t.tim0_lowVoltage_flag++;
 
      }
-      if(tim0_t.tim0_FunStart_flag==1){
+    if(tim0_t.tim0_FunStart_flag==1){
              temp++;
              if(temp>99){ //1s
                    temp =0;

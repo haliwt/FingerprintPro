@@ -54,10 +54,10 @@
 /**********************************************************************************
 	* 
     *PWM of Duty formula = (pwm of duty Cycle)/(prescale * Tosc) *100%
-    *   pwm3 of pwerid is Timer2 period =0.02ms , Timer2 prescale =1,Tosc=1/8MHz=0.125us
+    *   pwm3 of pwerid is Timer2 period =0.02ms,Ftimer2=50KHz , Timer2 prescale =1,Tosc=1/8MHz=0.125us
     *   PWM of Duty formula = (pwm of duty Cycle )/(prescale * Tosc) *100%
     *   100% Duty = (0.02ms)/(1*0.125*10^-3)=160-1=159 =0x9f
-    *   50%  Duty = 160*50%=80-1=79 = PWM3DCH:PWM3DCL = [0X13 : 0XC0]
+    *   50%  Duty = 160*50%=80-1=79(0x4F) = PWM3DCH:PWM3DCL = [0X13 : 0XC0]
 	*
 **********************************************************************************/
  /**
@@ -69,7 +69,7 @@
  {
     // Set the PWM to the options selected in the PIC10 / PIC12 / PIC16 / PIC18 MCUs.
     // PWM3POL active_hi; PWM3EN enabled; 
-    PWM3CON = 0x80;   
+    PWM3CON = 0x80;  // 
 
     // DC 19; 
     PWM3DCH = 0x13;   
@@ -84,10 +84,11 @@
 	 * 
 	 *Function Name:void PWM3_LoadDutyValue(uint16_t dutyValue)
 	 *PWM of Duty formula = (pwm of duty Cycle )/(prescale * Tosc) *100%
-	 *	 pwm3 of pwerid is Timer2 period =0.02ms , Timer2 prescale =1
+	 *	 pwm3 of pwerid is Timer2 period =0.02ms Ftimer2=50KHz , Timer2 prescale =1
 	 *	 100% Duty = (0.02ms)/(1*0.125*10^-3)=160-1=159 
 	 *	 50%  Duty = 160*50%=80-1=79
 	 *   40%  Duty = 160 *40% =64-1=63
+	 *   Letf-aligned
 	 *
 **********************************************************************************/
 void PWM3_LoadDutyValue(uint16_t dutyValue)

@@ -18,6 +18,7 @@ void EUSART_InputCmd_Run(void)
         case 0x5A: //power Off 
             /* code */
                 lamp_t.lampColor= 0x80;
+				tim0_t.tim0_fun_30s=0;
             break;
             
         case 0x52: //"R" rend Led
@@ -26,9 +27,10 @@ void EUSART_InputCmd_Run(void)
 			LAMP_WHITE_OFF();
 			LAMP_RED_OFF();
 			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100%
-			FAN_OFF_FUN();
+			PWM3_LoadDutyValue(0x9F); // 100% ->NPN-> 0 reverse
+			
 			DELAY_microseconds(500);
+			FAN_OFF_FUN();
 		
            lamp_t.lampColor= 0x52;
         break;
@@ -39,9 +41,10 @@ void EUSART_InputCmd_Run(void)
 			LAMP_WHITE_OFF();
 			LAMP_RED_OFF();
 			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100%
-			FAN_OFF_FUN();
+			PWM3_LoadDutyValue(0x9F); //100% ->NPN -> 0
+		
 			DELAY_microseconds(500);
+			FAN_OFF_FUN();
              lamp_t.lampColor= 0x47;
         break;
         
@@ -51,9 +54,9 @@ void EUSART_InputCmd_Run(void)
 			LAMP_WHITE_OFF();
 			LAMP_RED_OFF();
 			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100%
-			FAN_OFF_FUN();
+			PWM3_LoadDutyValue(0x9F); //100% ->NPN-> 0
 			DELAY_microseconds(500);
+			FAN_OFF_FUN();
            lamp_t.lampColor= 0x42;
         break;
         
@@ -63,9 +66,10 @@ void EUSART_InputCmd_Run(void)
 			LAMP_WHITE_OFF();
 			LAMP_RED_OFF();
 			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100%
-			FAN_OFF_FUN();
+			PWM3_LoadDutyValue(0x9F); //100% ->NPN -> 0
+		
 			DELAY_microseconds(500);
+			FAN_OFF_FUN();
             lamp_t.lampColor= 0x57; //KEY_WHITE
         break;
         
@@ -77,14 +81,25 @@ void EUSART_InputCmd_Run(void)
         break;
         
         case 0x02: //lamp "-"
+		    FAN_OFF_FUN();
         		DELAY_microseconds(500);
              lamp_t.lampColor= 0x10;
         break;
         
         case 0x3f: //"Close" ,turn off LED
+		    tim0_t.tim0_FunStart_flag=0;
+		    FAN_OFF_FUN();
             DELAY_microseconds(500);
             lamp_t.lampColor= 0x3f;
-        break; 
+        break;
+
+		case 0xff :
+		    tim0_t.tim0_FunStart_flag=0;
+             DELAY_microseconds(500);
+            lamp_t.lampColor= 0xff;
+
+
+		break;
     
        default:
         break;
