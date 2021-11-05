@@ -28,24 +28,21 @@ void EUSART_InputCmd_Run(void)
 		        LAMP_GREEN_OFF();
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
-				//LAMP_RED_OFF();
-				//TMR2_StartTimer();
-				//PWM3_LoadDutyValue(0); // 100% ->NPN-> 0 reverse
+		
 				
 				DELAY_microseconds(200);
-				FAN_OFF_FUN();
+	           FAN_OFF_FUN();
 			
 	           lamp_t.lampColor= 0x52;
 	        break;
 	        
 	        case 0x47:  //"Green"
-	        //	LAMP_GREEN_OFF();
+	        	LAMP_RED_OFF();
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-				//TMR2_StartTimer();
-				//PWM3_LoadDutyValue(0); //100% ->NPN -> 0
 			
+		
+			 
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	             lamp_t.lampColor= 0x47;
@@ -53,11 +50,10 @@ void EUSART_InputCmd_Run(void)
 	        
 	        case 0x42: //"Blue"
 	            LAMP_GREEN_OFF();
-				//LAMP_BLUE_OFF();
+			
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-				//TMR2_StartTimer();
-				//PWM3_LoadDutyValue(0); //100% ->NPN-> 0
+			
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	           lamp_t.lampColor= 0x42;
@@ -66,10 +62,9 @@ void EUSART_InputCmd_Run(void)
 	        case 0x57: //"White"
 	            LAMP_GREEN_OFF();
 				LAMP_BLUE_OFF();
-			//	LAMP_WHITE_OFF();
+			
 				LAMP_RED_OFF();
-				//TMR2_StartTimer();
-				//PWM3_LoadDutyValue(0); //100% ->NPN -> 0
+				
 			
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
@@ -78,13 +73,12 @@ void EUSART_InputCmd_Run(void)
 	        
 	      
 	       case 0x3f: //"Close" ,turn off LED
-			    tim0_t.tim0_FunStart_flag=0;
-			    DELAY_microseconds(200);
+	       	    DELAY_microseconds(200);
 	            lamp_t.lampColor= 0x3f;
 	        break;
 
 			case 0xff :
-			    tim0_t.tim0_FunStart_flag=0;
+			 
 	             DELAY_microseconds(200);
 	            lamp_t.lampColor= 0xff;
                 FAN_OFF_FUN();

@@ -51,6 +51,9 @@ void main(void)
        EUSART_SetRxInterruptHandler(RxData_EUSART);
        EUSART_InputCmd_Run();
        checkRun();
+	  // if(tim0_t.tim0_fun_30s > 30 ){
+           //    FAN_OFF_FUN();
+		//}
      }
 }
 /**

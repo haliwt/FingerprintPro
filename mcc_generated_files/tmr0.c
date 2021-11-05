@@ -46,6 +46,8 @@ void TMR0_Initialize(void)
 
     // T0OUTPS 1:10; T0EN enabled; T016BIT 8-bit; 
     T0CON0 = 0x89;
+
+	TMR0_StartTimer();
 }
 
 void TMR0_StartTimer(void)
@@ -111,16 +113,10 @@ void TMR0_CallBack(void)
         tim0_t.tim0_noBatt_s++;
         tim0_t.tim0_autoShutOff_lamp++;
         tim0_t.tim0_lowVoltage_flag++;
+		tim0_t.tim0_fun_30s++;
 
      }
-    if(tim0_t.tim0_FunStart_flag==1){
-             temp++;
-             if(temp>99){ //1s
-                   temp =0;
-                   tim0_t.tim0_fun_30s++;
-             }
-             if(tim0_t.tim0_fun_30s>35)tim0_t.tim0_fun_30s =40;
-      }
+   
 
      if(tim0_t.tim0_autoShutOff_lamp>899){//900s =15minute
           lamp_t.getMinutes15_flag =1;
