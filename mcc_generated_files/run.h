@@ -25,4 +25,5 @@ void RxData_EUSART(void);
 void EUSART_BatteryWorks_TxData(uint8_t index);
 void EUSART_BatteryCharging_TxData(uint8_t index);
 void EUSART_Adapter_TxData(uint8_t index);
+
 #endif 

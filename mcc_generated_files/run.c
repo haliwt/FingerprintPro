@@ -12,100 +12,117 @@ static uint8_t inputBuf[4];
  *****************************************************************************/
 void EUSART_InputCmd_Run(void)
 {
-	
-    switch (run_t.InputOrder[0])
-    {
-        case 0x5A: //power Off 
-            /* code */
-                lamp_t.lampColor= 0x80;
-				tim0_t.tim0_fun_30s=0;
-            break;
-            
-        case 0x52: //"R" rend Led
-	        LAMP_GREEN_OFF();
-			LAMP_BLUE_OFF();
-			LAMP_WHITE_OFF();
-			LAMP_RED_OFF();
-			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); // 100% ->NPN-> 0 reverse
+
+    if(run_t.InputOrder[0]=='O'){
+
+	    switch (run_t.InputOrder[1])
+	    {
+
+	        case 0x5A: //power Off 
+	            /* code */
+	                lamp_t.lampColor= 0x80;
+					tim0_t.tim0_fun_30s=0;
+	            break;
+	            
+	        case 0x52: //"R" rend Led
+		        LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				//LAMP_RED_OFF();
+				//TMR2_StartTimer();
+				//PWM3_LoadDutyValue(0); // 100% ->NPN-> 0 reverse
+				
+				DELAY_microseconds(200);
+				FAN_OFF_FUN();
 			
-			DELAY_microseconds(500);
-			FAN_OFF_FUN();
-		
-           lamp_t.lampColor= 0x52;
-        break;
-        
-        case 0x47:  //"Green"
-        	LAMP_GREEN_OFF();
-			LAMP_BLUE_OFF();
-			LAMP_WHITE_OFF();
-			LAMP_RED_OFF();
-			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100% ->NPN -> 0
-		
-			DELAY_microseconds(500);
-			FAN_OFF_FUN();
-             lamp_t.lampColor= 0x47;
-        break;
-        
-        case 0x42: //"Blue"
-            LAMP_GREEN_OFF();
-			LAMP_BLUE_OFF();
-			LAMP_WHITE_OFF();
-			LAMP_RED_OFF();
-			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100% ->NPN-> 0
-			DELAY_microseconds(500);
-			FAN_OFF_FUN();
-           lamp_t.lampColor= 0x42;
-        break;
-        
-        case 0x57: //"White"
-            LAMP_GREEN_OFF();
-			LAMP_BLUE_OFF();
-			LAMP_WHITE_OFF();
-			LAMP_RED_OFF();
-			TMR2_StartTimer();
-			PWM3_LoadDutyValue(0x9F); //100% ->NPN -> 0
-		
-			DELAY_microseconds(500);
-			FAN_OFF_FUN();
-            lamp_t.lampColor= 0x57; //KEY_WHITE
-        break;
-        
-        case 0x01: //lamp "+"
-        	DELAY_microseconds(500);
-        
-            lamp_t.lampColor= 0x20;
-        
-        break;
-        
-        case 0x02: //lamp "-"
-		    FAN_OFF_FUN();
-        		DELAY_microseconds(500);
-             lamp_t.lampColor= 0x10;
-        break;
-        
-        case 0x3f: //"Close" ,turn off LED
-		    tim0_t.tim0_FunStart_flag=0;
-		    FAN_OFF_FUN();
-            DELAY_microseconds(500);
-            lamp_t.lampColor= 0x3f;
-        break;
+	           lamp_t.lampColor= 0x52;
+	        break;
+	        
+	        case 0x47:  //"Green"
+	        //	LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				//TMR2_StartTimer();
+				//PWM3_LoadDutyValue(0); //100% ->NPN -> 0
+			
+				DELAY_microseconds(200);
+				FAN_OFF_FUN();
+	             lamp_t.lampColor= 0x47;
+	        break;
+	        
+	        case 0x42: //"Blue"
+	            LAMP_GREEN_OFF();
+				//LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				//TMR2_StartTimer();
+				//PWM3_LoadDutyValue(0); //100% ->NPN-> 0
+				DELAY_microseconds(200);
+				FAN_OFF_FUN();
+	           lamp_t.lampColor= 0x42;
+	        break;
+	        
+	        case 0x57: //"White"
+	            LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+			//	LAMP_WHITE_OFF();
+				LAMP_RED_OFF();
+				//TMR2_StartTimer();
+				//PWM3_LoadDutyValue(0); //100% ->NPN -> 0
+			
+				DELAY_microseconds(200);
+				FAN_OFF_FUN();
+	            lamp_t.lampColor= 0x57; //KEY_WHITE
+	        break;
+	        
+	      
+	       case 0x3f: //"Close" ,turn off LED
+			    tim0_t.tim0_FunStart_flag=0;
+			    DELAY_microseconds(200);
+	            lamp_t.lampColor= 0x3f;
+	        break;
 
-		case 0xff :
-		    tim0_t.tim0_FunStart_flag=0;
-             DELAY_microseconds(500);
-            lamp_t.lampColor= 0xff;
+			case 0xff :
+			    tim0_t.tim0_FunStart_flag=0;
+	             DELAY_microseconds(200);
+	            lamp_t.lampColor= 0xff;
+                FAN_OFF_FUN();
 
 
-		break;
-    
-       default:
-        break;
+			break;
+	    
+	       default:
+	        break;
+	    }
     }
-	
+    if(run_t.InputOrder[0]=='B'){
+            TX1REG = 'B';
+	    switch(run_t.InputOrder[1]){
+
+		   case 0x31 : //brightness "+"
+		   	  DELAY_microseconds(200);
+	        
+	          lamp_t.lampColor= 0x20;
+
+		   break;
+
+		   case 0x32 : //brightnes "-"
+
+	        	DELAY_microseconds(200);
+	            lamp_t.lampColor= 0x10;
+
+		   break;
+
+		   default: 
+
+		   break;
+
+		}
+
 }
+}
+
 /******************************************************************************
 	 * 
 	 * Function Name: void EUSART_BatteryWorks_TxData(uint8_t index)
@@ -225,11 +242,20 @@ void RxData_EUSART(void)
             else i=0;
 		}
         else if(i==2){
-           run_t.InputOrder[0]=inputBuf[2];
+			 
+			 if(inputBuf[2]=='B') //bightness
+			   run_t.InputOrder[0]=inputBuf[2];
+			 else if(inputBuf[2]=='O') //order
+               run_t.InputOrder[0]=inputBuf[2];
+			 else i=0;
         }
+		else if(i==3){
+			 run_t.InputOrder[1]=inputBuf[3];
+             
+		}
 		
 	    i++;
-		if(i==3)i=0;
+		if(i==4)i=0;
         
      PIE3bits.RC1IE = 1; 
      PIE3bits.TX1IE = 1;

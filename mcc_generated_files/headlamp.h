@@ -21,20 +21,20 @@
 
 
 #define RED_DUTY_MAX_LEVEL                159  //50KHz //79  //80%
-#define RED_DUTY_MIN_LEVEL                0     //160*30% =48
+#define RED_DUTY_MIN_LEVEL                79     //160*30% =48
 
 
 
 
 #define GREEN_DUTY_MAX_LEVEL               159  //50KHz //70%
-#define GREEN_DUTY_MIN_LEVEL               0       //160*20%
+#define GREEN_DUTY_MIN_LEVEL               79       //160*20%
 
 
 #define WHITE_DUTY_MAX_LEVEL               159  //50KHz //60%
-#define WHITE_DUTY_MIN_LEVEL              0       //160*40%
+#define WHITE_DUTY_MIN_LEVEL              79      //160*40%
 
 #define BLUE_DUTY_MAX_LEVEL               159//50KHz //70%
-#define BLUE_DUTY_MIN_LEVEL               0       //160*50%
+#define BLUE_DUTY_MIN_LEVEL               79       //160*50%
 
 #define DUTY_STEP_LEVEL                   20
 
