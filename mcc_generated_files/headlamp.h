@@ -85,9 +85,10 @@ void checkMode(uint8_t value);
 void checkRun(void);
 
 void LAMP_Init_Value(void);
-void LAMP_ShutOff(void);
-void PowerOff_Fun(void);
+
+
 void FAN_ON_FUN(void);
 void FAN_OFF_FUN(void);
+void FUN_15MinutesTurnOff(void);
 
 #endif 

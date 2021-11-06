@@ -112,7 +112,6 @@ void TMR0_CallBack(void)
         tim0_t.tim0_BattStatus++;
         tim0_t.tim0_noBatt_s++;
         tim0_t.tim0_autoShutOff_lamp++;
-        tim0_t.tim0_lowVoltage_flag++;
 		tim0_t.tim0_fun_30s++;
 
      }

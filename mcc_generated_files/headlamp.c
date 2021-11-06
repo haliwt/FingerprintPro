@@ -4,8 +4,8 @@
 #include "tmr0.h"
 
 uint8_t pwmDutyArray[4];
-static uint8_t currLamp;
-static void PWM_DUTY_ADJ(void);
+
+
 static void ADJ_LampBrightnessADD(void);
 static void ADJ_LampBrightnessSUB(void);
 static void setLevel_RED_PWM(uint8_t level);
@@ -72,6 +72,11 @@ void checkRun(void)
 		}
 			
 	break;
+
+	  case 0xff:
+       FUN_15MinutesTurnOff();      
+
+	  break;
 
       case 0x57: //"White" --OK
         
@@ -168,9 +173,7 @@ void checkRun(void)
 		 
 	break;
 	
-	case 0x40:
-	     PWM_DUTY_ADJ();
-	break;
+	
 	
 	
     default:
@@ -416,112 +419,30 @@ static void setLevel_BLUE_PWM(uint8_t level)
 
 /**************************************************************
 	*
-	*Function Name:void CheckMode(uint8_t value)
+	*Function Name:void FUN_15MinutesTurnOff(void)
 	*Function: 
 	*Input Ref:key be pressed of value
 	*Return Ref:NO
 	*
 **************************************************************/
-static void PWM_DUTY_ADJ(void)
+void FUN_15MinutesTurnOff(void)
 {
-	
-        switch(lamp_t.lampWhichColor_ON_flag){
-			
-			case White:
-			     lamp_t.lampPWM_ON=White;
-		        lamp_t.white_pwmDuty=79;
-				
-			   
-				//TMR2_StartTimer();
-				PWM3_LoadDutyValue(lamp_t.white_pwmDuty); //PWM cycle duty =50%
-				LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_RED_OFF();
-				
-				LAMP_WHITE_ON();
-				
-				FAN_ON_FUN();
-				
-			break;
-			
-			case Blue:
-			     lamp_t.lampPWM_ON=Blue;
-				 lamp_t.blue_pwmDuty=79;
-				
-			
-				//TMR2_StartTimer();
-				PWM3_LoadDutyValue(lamp_t.blue_pwmDuty); //PWM cycle duty =50%
-				LAMP_RED_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_GREEN_OFF();
-				
-				 LAMP_BLUE_ON();
-				
-				FAN_ON_FUN();
-				TX1REG =2;
-			
-			break;
-			
-			case Green:
-				lamp_t.lampPWM_ON=Green;
-				lamp_t.green_pwmDuty=79;
-				
-				//TMR2_StartTimer();
-				PWM3_LoadDutyValue(lamp_t.green_pwmDuty); //PWM cycle duty =50%
-				LAMP_RED_OFF();
-				LAMP_WHITE_OFF();
-				LAMP_BLUE_OFF();
+		lamp_t.lampWhichColor_ON_flag=noColor;
+		LAMP_GREEN_OFF();
+		LAMP_BLUE_OFF();
+		LAMP_WHITE_OFF();
+		LAMP_RED_OFF();
 
-				LAMP_GREEN_ON();
-				
-				FAN_ON_FUN();
-				TX1REG =2;
-			
-			break;
-			
-			case Red:
-			lamp_t.lampPWM_ON=Red;
-			lamp_t.red_pwmDuty=79;
+		 TMR2_StopTimer();
+		 PWM3_LoadDutyValue(0); //100% -> NPN -> 0
+		lamp_t.zeroflag=1;
+		lamp_t.lampColor=0;
+		lamp_t.lampPWM_ON=0;
+		lamp_t.lampPWM_adj=0;
+		 FAN_OFF_FUN();
 		
-			//TMR2_StartTimer();
-			PWM3_LoadDutyValue(lamp_t.red_pwmDuty); //PWM cycle duty =50%
-			LAMP_GREEN_OFF();
-			LAMP_BLUE_OFF();
-			LAMP_WHITE_OFF();
-
-			LAMP_RED_ON();
-	
-			FAN_ON_FUN();
-			TX1REG =1;
-			
-			break;
-			
-	
+       
 }
-}
-
-/**************************************************************
-	*
-	*Function Name:void DispalayBattery_Power(uint8_t)
-	*Function: display battery power qunantity
-	*
-	*
-	*
-**************************************************************/
-void LowVotalge_Detected(void)
-{
-	ADC_Battery_ConversionValue_Voltage();
-	if(adc_t.adcValue < 30 || adc_t.adcValue==30){
-		 
-		 //LowVoltageAlarm();
-		
-	}
-    else {
-	   tim0_t.tim0_lowVoltage_flag =0;
-	}
-	
-}
-
 /****************************************************************************
     *
     * Function Name: void FAN_FUN(void)

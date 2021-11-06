@@ -29,7 +29,7 @@ void EUSART_InputCmd_Run(void)
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 		
-				
+				TMR2_StartTimer();
 				DELAY_microseconds(200);
 	           FAN_OFF_FUN();
 			
@@ -42,7 +42,7 @@ void EUSART_InputCmd_Run(void)
 				LAMP_WHITE_OFF();
 			
 		
-			 
+			 	TMR2_StartTimer();
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	             lamp_t.lampColor= 0x47;
@@ -53,7 +53,7 @@ void EUSART_InputCmd_Run(void)
 			
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
-			
+			   TMR2_StartTimer();
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	           lamp_t.lampColor= 0x42;
@@ -65,7 +65,7 @@ void EUSART_InputCmd_Run(void)
 			
 				LAMP_RED_OFF();
 				
-			
+				TMR2_StartTimer();
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	            lamp_t.lampColor= 0x57; //KEY_WHITE
