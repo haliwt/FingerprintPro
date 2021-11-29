@@ -79,7 +79,7 @@ void EUSART_InputCmd_Run(void)
 
 			case 0xff :
 			 
-	             DELAY_microseconds(200);
+	            DELAY_microseconds(200);
 	            lamp_t.lampColor= 0xff;
                 FAN_OFF_FUN();
 
@@ -237,15 +237,15 @@ void RxData_EUSART(void)
 		}
         else if(i==2){
 			 
-			 if(inputBuf[2]=='B') //bightness
+			 if(inputBuf[2]=='B') //bightness // 0x42
 			   run_t.InputOrder[0]=inputBuf[2];
-			 else if(inputBuf[2]=='O') //order
+			 else if(inputBuf[2]=='O') //order  0x4F
                run_t.InputOrder[0]=inputBuf[2];
 			 else i=0;
         }
 		else if(i==3){
 			 run_t.InputOrder[1]=inputBuf[3];
-             
+           
 		}
 		
 	    i++;

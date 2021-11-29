@@ -48,17 +48,12 @@ void main(void)
 
     while (1)
     {
-       
-	   EUSART_SetRxInterruptHandler(RxData_EUSART);
-       EUSART_InputCmd_Run();
-       checkRun();
-	   if(lamp_t.getMinutes15_flag ==1){
-           lamp_t.getMinutes15_flag=0;
-		   FUN_15MinutesTurnOff();
-	   }
-	   
-	 
-     }
+     
+	  EUSART_SetRxInterruptHandler(RxData_EUSART);
+      EUSART_InputCmd_Run();
+      checkRun();
+      
+	 }
 }
 /**
  End of File

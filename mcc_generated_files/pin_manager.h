@@ -185,25 +185,7 @@
 #define channel_ANB2_SetAnalogMode()      do { ANSELBbits.ANSELB2 = 1; } while(0)
 #define channel_ANB2_SetDigitalMode()     do { ANSELBbits.ANSELB2 = 0; } while(0)
 
-// get/set FAN_EN aliases
-#define FAN_EN_TRIS                 TRISBbits.TRISB5
-#define FAN_EN_LAT                  LATBbits.LATB5
-#define FAN_EN_PORT                 PORTBbits.RB5
-#define FAN_EN_WPU                  WPUBbits.WPUB5
-#define FAN_EN_OD                   ODCONBbits.ODCB5
-#define FAN_EN_ANS                  ANSELBbits.ANSELB5
-#define FAN_EN_SetHigh()            do { LATBbits.LATB5 = 1; } while(0)
-#define FAN_EN_SetLow()             do { LATBbits.LATB5 = 0; } while(0)
-#define FAN_EN_Toggle()             do { LATBbits.LATB5 = ~LATBbits.LATB5; } while(0)
-#define FAN_EN_GetValue()           PORTBbits.RB5
-#define FAN_EN_SetDigitalInput()    do { TRISBbits.TRISB5 = 1; } while(0)
-#define FAN_EN_SetDigitalOutput()   do { TRISBbits.TRISB5 = 0; } while(0)
-#define FAN_EN_SetPullup()          do { WPUBbits.WPUB5 = 1; } while(0)
-#define FAN_EN_ResetPullup()        do { WPUBbits.WPUB5 = 0; } while(0)
-#define FAN_EN_SetPushPull()        do { ODCONBbits.ODCB5 = 0; } while(0)
-#define FAN_EN_SetOpenDrain()       do { ODCONBbits.ODCB5 = 1; } while(0)
-#define FAN_EN_SetAnalogMode()      do { ANSELBbits.ANSELB5 = 1; } while(0)
-#define FAN_EN_SetDigitalMode()     do { ANSELBbits.ANSELB5 = 0; } while(0)
+
 
 // get/set DET_BATT aliases
 #define DET_BATT_TRIS                 TRISCbits.TRISC0
@@ -236,6 +218,26 @@
 #define RC1_ResetPullup()           do { WPUCbits.WPUC1 = 0; } while(0)
 #define RC1_SetAnalogMode()         do { ANSELCbits.ANSELC1 = 1; } while(0)
 #define RC1_SetDigitalMode()        do { ANSELCbits.ANSELC1 = 0; } while(0)
+
+// get/set FAN_EN aliases RC3
+#define FAN_EN_TRIS                 TRISCbits.TRISC3
+#define FAN_EN_LAT                  LATCbits.LATC3
+#define FAN_EN_PORT                 PORTCbits.RC3
+#define FAN_EN_WPU                  WPUCbits.WPUC3
+#define FAN_EN_OD                   ODCONCbits.ODCC3
+#define FAN_EN_ANS                  ANSELCbits.ANSELC3
+#define FAN_EN_SetHigh()            do { LATCbits.LATC3 = 1; } while(0)
+#define FAN_EN_SetLow()             do { LATCbits.LATC3 = 0; } while(0)
+#define FAN_EN_Toggle()             do { LATCbits.LATC3 = ~LATBbits.LATC3; } while(0)
+#define FAN_EN_GetValue()           PORTCbits.RC3
+#define FAN_EN_SetDigitalInput()    do { TRISCbits.TRISC3 = 1; } while(0)
+#define FAN_EN_SetDigitalOutput()   do { TRISCbits.TRISC3 = 0; } while(0)
+#define FAN_EN_SetPullup()          do { WPUBbits.WPUB5 = 1; } while(0)
+#define FAN_EN_ResetPullup()        do { WPUBbits.WPUB5 = 0; } while(0)
+#define FAN_EN_SetPushPull()        do { ODCONBbits.ODCB5 = 0; } while(0)
+#define FAN_EN_SetOpenDrain()       do { ODCONBbits.ODCB5 = 1; } while(0)
+#define FAN_EN_SetAnalogMode()      do { ANSELBbits.ANSELB5 = 1; } while(0)
+#define FAN_EN_SetDigitalMode()     do { ANSELBbits.ANSELB5 = 0; } while(0)
 
 // get/set RC6 procedures
 #define RC6_SetHigh()            do { LATCbits.LATC6 = 1; } while(0)

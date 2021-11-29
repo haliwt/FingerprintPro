@@ -2,7 +2,7 @@
 #include "tmr2.h"
 #include "delay.h"
 #include "tmr0.h"
-
+LAMP_T lamp_t;
 uint8_t pwmDutyArray[4];
 
 
@@ -83,14 +83,14 @@ void checkRun(void)
 	   tim0_t.tim0_fun_30s=0;
 	    lamp_t.lampWhichColor_ON_flag = White;
 		lamp_t.zeroflag=2;
-	   lamp_t.white_pwmDuty=79;
-			lamp_t.white_pwmDuty=79;
+	   lamp_t.white_pwmDuty=39;
 			
-	      PWM3_LoadDutyValue(lamp_t.white_pwmDuty); //PWM cycle duty =50%	
+		PWM3_LoadDutyValue(lamp_t.white_pwmDuty); //PWM cycle duty =50%	
 			   
 			LAMP_WHITE_ON();	
-		FAN_ON_FUN();
+		
 		 DELAY_microseconds(200);
+         FAN_ON_FUN();
 		
      
 		
@@ -101,18 +101,16 @@ void checkRun(void)
 	    lamp_t.lampWhichColor_ON_flag = Green;
 		lamp_t.zeroflag=2;
 	 
-		  lamp_t.green_pwmDuty=79;
+		  lamp_t.green_pwmDuty=39;
 			
 	      PWM3_LoadDutyValue(lamp_t.green_pwmDuty); //PWM cycle duty =50%
 	    	
 		 LAMP_GREEN_ON();
-		 FAN_ON_FUN();
-		 DELAY_microseconds(200);
-		 
 		
-			
-
-	break;
+		 DELAY_microseconds(200);
+         FAN_ON_FUN();
+		 
+		break;
 
 	case 0x42: //-> 'blue'
 		tim0_t.tim0_fun_30s=0;
@@ -120,12 +118,13 @@ void checkRun(void)
 		lamp_t.zeroflag=2;
 	    lamp_t.lampPWM_ON=Blue;
 		
-			 lamp_t.blue_pwmDuty=79;
+			 lamp_t.blue_pwmDuty=39;
 	
 	         PWM3_LoadDutyValue(lamp_t.blue_pwmDuty); //PWM cycle duty =50%
 	         LAMP_BLUE_ON();
-			 FAN_ON_FUN();
+			
 		DELAY_microseconds(200);
+         FAN_ON_FUN();
 		
 		
 	break;
@@ -136,12 +135,13 @@ void checkRun(void)
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
 	 
-		lamp_t.red_pwmDuty=79;
+		lamp_t.red_pwmDuty=39;
         PWM3_LoadDutyValue(lamp_t.red_pwmDuty); //PWM cycle duty =50%
 
 		LAMP_RED_ON();
-		 FAN_ON_FUN();
+	
 		DELAY_microseconds(200);
+         FAN_ON_FUN();
 		 
 	
       break;
@@ -151,8 +151,9 @@ void checkRun(void)
 	       if(lamp_t.zeroflag==2){//in process LED on status 
 				FAN_OFF_FUN();
 				ADJ_LampBrightnessADD();
-		         FAN_ON_FUN();
+		     
 		        DELAY_microseconds(200);
+                    FAN_ON_FUN();
 				tim0_t.tim0_fun_30s=0;
              
 		   }
@@ -165,8 +166,9 @@ void checkRun(void)
 		 if(lamp_t.zeroflag==2){ //in process LED on status 
 	    	FAN_OFF_FUN();
 			ADJ_LampBrightnessSUB();
-		    FAN_ON_FUN();
+	
 		    DELAY_microseconds(200);
+                FAN_ON_FUN();
 		   tim0_t.tim0_fun_30s=0;
       
 		 }
@@ -453,13 +455,13 @@ void FUN_15MinutesTurnOff(void)
  ****************************************************************************/
 void FAN_ON_FUN(void)
 {
-   
-   FAN_EN_SetLow() ;
+   FAN_EN_SetHigh();//FAN_RB5_SetHigh() ;
+   //FAN_EN_SetLow() ;
 }
 
 void FAN_OFF_FUN(void)
 {
-   FAN_EN_SetHigh();//FAN_RB5_SetHigh() ;
+   FAN_EN_SetLow() ;//FAN_RB5_SetHigh() ;
 }
 /**************************************************************
 	*

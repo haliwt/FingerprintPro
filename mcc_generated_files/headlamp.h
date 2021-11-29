@@ -58,6 +58,7 @@ typedef struct {
    uint8_t gbatteryLifePercent;
    uint8_t Power_On;
    uint8_t switch_dev;
+   uint8_t gFAN_flag;
    uint16_t red_pwmDuty;
    uint16_t green_pwmDuty;
    uint16_t blue_pwmDuty;
@@ -65,11 +66,9 @@ typedef struct {
    uint16_t pwmDuty;
    
    
-   
-   
-}LAMP_T;
+  }LAMP_T;
 
-LAMP_T lamp_t;
+extern LAMP_T lamp_t;
 
 typedef enum{
 
