@@ -1,6 +1,6 @@
 #ifndef __RUN_H__
 #define __RUN_H__
-#include "mcc.h"
+#include "../mcc_generated_files/mcc.h"
 
 extern volatile uint8_t transOngoingFlag;
 

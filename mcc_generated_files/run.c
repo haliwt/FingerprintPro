@@ -1,5 +1,5 @@
 #include "run.h"
-
+#include "../mcc_generated_files/eusart.h"
 RUN_T run_t;
 volatile uint8_t transOngoingFlag;
 volatile uint8_t outputBuf[5];
@@ -24,20 +24,8 @@ void EUSART_InputCmd_Run(void)
 					tim0_t.tim0_fun_30s=0;
 	            break;
 	            
-	        case 0x52: //"R" rend Led
-		        LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-				LAMP_WHITE_OFF();
-		
-				TMR2_StartTimer();
-				DELAY_microseconds(200);
-	           FAN_OFF_FUN();
-			
-	           lamp_t.lampColor= 0x52;
-	        break;
-	        
-	        case 0x47:  //"Green"
-	        	LAMP_RED_OFF();
+	        case 0x52: //"R" red Led --->Green
+		        LAMP_RED_OFF();
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 			
@@ -48,8 +36,43 @@ void EUSART_InputCmd_Run(void)
 	             lamp_t.lampColor= 0x47;
 	        break;
 	        
-	        case 0x42: //"Blue"
-	            LAMP_GREEN_OFF();
+	        case 0x47:  //"Green"  -->White
+	        	
+                 //-------------
+                 //white
+                LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+			    LAMP_RED_OFF();
+				
+				TMR2_StartTimer();
+				DELAY_microseconds(200);
+				FAN_OFF_FUN();
+	            lamp_t.lampColor= 0x57; //KEY_WHITE
+                 //----------------
+	        break;
+	        
+	        case 0x42: //"Blue"  --->Red 
+       
+ 
+               //red
+                LAMP_GREEN_OFF();
+				LAMP_BLUE_OFF();
+				LAMP_WHITE_OFF();
+		
+				TMR2_StartTimer();
+				DELAY_microseconds(200);
+	           FAN_OFF_FUN();
+			
+	           lamp_t.lampColor= 0x52;
+               //---------------
+	        break;
+	        
+	        case 0x57: //"White"--->blue
+               
+	   
+                //--------------------
+                //Blue
+                LAMP_GREEN_OFF();
 			
 				LAMP_WHITE_OFF();
 				LAMP_RED_OFF();
@@ -57,18 +80,6 @@ void EUSART_InputCmd_Run(void)
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	           lamp_t.lampColor= 0x42;
-	        break;
-	        
-	        case 0x57: //"White"
-	            LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
-			
-				LAMP_RED_OFF();
-				
-				TMR2_StartTimer();
-				DELAY_microseconds(200);
-				FAN_OFF_FUN();
-	            lamp_t.lampColor= 0x57; //KEY_WHITE
 	        break;
 	        
 	      

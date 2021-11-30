@@ -2,6 +2,7 @@
 #include "tmr2.h"
 #include "delay.h"
 #include "tmr0.h"
+#include "../mcc_generated_files/mcc.h"
 LAMP_T lamp_t;
 uint8_t pwmDutyArray[4];
 
@@ -69,6 +70,7 @@ void checkRun(void)
 		
 	    if(tim0_t.tim0_fun_30s > 30 ){
                FAN_OFF_FUN();
+               lamp_t.gFAN_flag=0;
 		}
 			
 	break;
@@ -89,8 +91,8 @@ void checkRun(void)
 			   
 			LAMP_WHITE_ON();	
 		
-		 DELAY_microseconds(200);
-         FAN_ON_FUN();
+		// DELAY_microseconds(200);
+         lamp_t.gFAN_flag=1;//FAN_ON_FUN();
 		
      
 		
@@ -107,8 +109,8 @@ void checkRun(void)
 	    	
 		 LAMP_GREEN_ON();
 		
-		 DELAY_microseconds(200);
-         FAN_ON_FUN();
+		// DELAY_microseconds(200);
+          lamp_t.gFAN_flag=1;//FAN_ON_FUN();
 		 
 		break;
 
@@ -123,15 +125,15 @@ void checkRun(void)
 	         PWM3_LoadDutyValue(lamp_t.blue_pwmDuty); //PWM cycle duty =50%
 	         LAMP_BLUE_ON();
 			
-		DELAY_microseconds(200);
-         FAN_ON_FUN();
+		//DELAY_microseconds(200);
+         lamp_t.gFAN_flag=1;//FAN_ON_FUN();
 		
 		
 	break;
 
 	 case 0x52: //"R" rend Led//0x08://KEY_RED
 	   
-       tim0_t.tim0_fun_30s=0;
+      
 	    lamp_t.lampWhichColor_ON_flag = Red;
 		lamp_t.zeroflag=2;
 	 
@@ -140,9 +142,9 @@ void checkRun(void)
 
 		LAMP_RED_ON();
 	
-		DELAY_microseconds(200);
-         FAN_ON_FUN();
-		 
+		//DELAY_microseconds(200);
+          lamp_t.gFAN_flag=1;//FAN_ON_FUN();
+		  tim0_t.tim0_fun_30s=0;
 	
       break;
 
@@ -152,8 +154,8 @@ void checkRun(void)
 				FAN_OFF_FUN();
 				ADJ_LampBrightnessADD();
 		     
-		        DELAY_microseconds(200);
-                    FAN_ON_FUN();
+		       DELAY_microseconds(200);
+                   lamp_t.gFAN_flag=1;//FAN_ON_FUN();
 				tim0_t.tim0_fun_30s=0;
              
 		   }
@@ -167,17 +169,14 @@ void checkRun(void)
 	    	FAN_OFF_FUN();
 			ADJ_LampBrightnessSUB();
 	
-		    DELAY_microseconds(200);
-                FAN_ON_FUN();
-		   tim0_t.tim0_fun_30s=0;
+		   // DELAY_microseconds(200);
+                lamp_t.gFAN_flag=1;//FAN_ON_FUN();
+                tim0_t.tim0_fun_30s=0;
       
 		 }
 		 
 	break;
-	
-	
-	
-	
+    
     default:
     
 
@@ -455,8 +454,10 @@ void FUN_15MinutesTurnOff(void)
  ****************************************************************************/
 void FAN_ON_FUN(void)
 {
-   FAN_EN_SetHigh();//FAN_RB5_SetHigh() ;
-   //FAN_EN_SetLow() ;
+    if(lamp_t.gFAN_flag==1)
+       FAN_EN_SetHigh();//ON
+    else 
+       FAN_EN_SetLow() ; //OFF
 }
 
 void FAN_OFF_FUN(void)

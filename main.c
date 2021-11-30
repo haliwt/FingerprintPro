@@ -52,7 +52,7 @@ void main(void)
 	  EUSART_SetRxInterruptHandler(RxData_EUSART);
       EUSART_InputCmd_Run();
       checkRun();
-      
+      FAN_ON_FUN();
 	 }
 }
 /**
