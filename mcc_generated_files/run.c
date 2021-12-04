@@ -34,6 +34,7 @@ void EUSART_InputCmd_Run(void)
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	             lamp_t.lampColor= 0x47;
+                 lamp_t.green_pwmDuty=0;
 	        break;
 	        
 	        case 0x47:  //"Green"  -->White
@@ -48,6 +49,7 @@ void EUSART_InputCmd_Run(void)
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	            lamp_t.lampColor= 0x57; //KEY_WHITE
+                lamp_t.white_pwmDuty=0;
                  //----------------
 	        break;
 	        
@@ -64,6 +66,7 @@ void EUSART_InputCmd_Run(void)
 	           FAN_OFF_FUN();
 			
 	           lamp_t.lampColor= 0x52;
+               lamp_t.red_pwmDuty=0;
                //---------------
 	        break;
 	        
@@ -80,6 +83,7 @@ void EUSART_InputCmd_Run(void)
 				DELAY_microseconds(200);
 				FAN_OFF_FUN();
 	           lamp_t.lampColor= 0x42;
+               lamp_t.blue_pwmDuty=0;
 	        break;
 	        
 	      

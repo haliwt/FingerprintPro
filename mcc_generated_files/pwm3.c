@@ -75,7 +75,8 @@
     PWM3DCH = 0x13;   
 
     // DC 3; 
-    PWM3DCL = 0xC0;   
+    PWM3DCL = 0xC0;  
+  
 
     // Select timer
     CCPTMRSbits.P3TSEL = 1;
