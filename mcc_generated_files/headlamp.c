@@ -127,11 +127,11 @@ void CheckRun(void)
 	         LAMP_RED_ON();
              DELAY_milliseconds(3);//DELAY_milliseconds(100);
 			 LAMP_RED_OFF();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(6);
              LAMP_RED_ON();
              DELAY_milliseconds(3);
              LAMP_RED_OFF();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(6);
            
 		   
        
@@ -222,11 +222,11 @@ static void ADJ_LampBrightnessADD(void)
                lamp_t.red_pwmDuty=0;
                PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
               LAMP_RED_ON();
-             DELAY_milliseconds(4);//DELAY_milliseconds(100);
+             DELAY_milliseconds(3);//DELAY_milliseconds(100);
 			 LAMP_RED_OFF();
              DELAY_milliseconds(4);
              LAMP_RED_ON();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(3);
              LAMP_RED_OFF();
              DELAY_milliseconds(4);
 
@@ -330,11 +330,11 @@ static void ADJ_LampBrightnessSUB(void)
                LAMP_RED_ON();
              DELAY_milliseconds(2);//DELAY_milliseconds(100);
 			 LAMP_RED_OFF();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(7);
              LAMP_RED_ON();
              DELAY_milliseconds(2);
              LAMP_RED_OFF();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(7);
              
 			
 
