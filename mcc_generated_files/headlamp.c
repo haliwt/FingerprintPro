@@ -125,10 +125,14 @@ void CheckRun(void)
 		 lamp_t.gFAN_flag=1;//FAN_ON_FUN();	
          
 	         LAMP_RED_ON();
-             DELAY_microseconds(50);
+             DELAY_milliseconds(3);//DELAY_milliseconds(100);
 			 LAMP_RED_OFF();
-             DELAY_microseconds(500);
-             DELAY_microseconds(500);
+             DELAY_milliseconds(4);
+             LAMP_RED_ON();
+             DELAY_milliseconds(3);
+             LAMP_RED_OFF();
+             DELAY_milliseconds(4);
+           
 		   
        
 		
@@ -217,15 +221,14 @@ static void ADJ_LampBrightnessADD(void)
 				LAMP_WHITE_OFF();
                lamp_t.red_pwmDuty=0;
                PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
-               LAMP_RED_ON();
-			   DELAY_microseconds(100);
-			   LAMP_RED_OFF();
-               DELAY_microseconds(500);
-               DELAY_microseconds(500);
-               // LAMP_RED_OFF();
-		
-			  
-                LAMP_RED_ON();
+              LAMP_RED_ON();
+             DELAY_milliseconds(4);//DELAY_milliseconds(100);
+			 LAMP_RED_OFF();
+             DELAY_milliseconds(4);
+             LAMP_RED_ON();
+             DELAY_milliseconds(4);
+             LAMP_RED_OFF();
+             DELAY_milliseconds(4);
 
 	     break;
 
@@ -320,15 +323,19 @@ static void ADJ_LampBrightnessSUB(void)
                 LAMP_BLUE_OFF();
 			    LAMP_GREEN_OFF();
 				LAMP_WHITE_OFF();
+                
                lamp_t.red_pwmDuty=0;
                PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
+               
                LAMP_RED_ON();
-			   DELAY_microseconds(50);
-			   LAMP_RED_OFF();
-                DELAY_microseconds(500);
-                DELAY_microseconds(500);
-                DELAY_microseconds(500);
-               // LAMP_RED_OFF();
+             DELAY_milliseconds(2);//DELAY_milliseconds(100);
+			 LAMP_RED_OFF();
+             DELAY_milliseconds(4);
+             LAMP_RED_ON();
+             DELAY_milliseconds(2);
+             LAMP_RED_OFF();
+             DELAY_milliseconds(4);
+             
 			
 
 	     break;
