@@ -24,66 +24,55 @@ void EUSART_InputCmd_Run(void)
 					tim0_t.tim0_fun_30s=0;
 	            break;
 	            
-	        case 0x52: //"R" red Led --->Green
+	        case 0x52: //"GREEN" 
 		        LAMP_RED_OFF();
 				LAMP_BLUE_OFF();
 				LAMP_WHITE_OFF();
 			
-		
-			 	TMR2_StartTimer();
-				DELAY_microseconds(200);
 				FAN_OFF_FUN();
-	             lamp_t.lampColor= 0x47;
-                 lamp_t.green_pwmDuty=0;
+	             lamp_t.lampColor= 0x47; //GREEN
+                
 	        break;
 	        
-	        case 0x47:  //"Green"  -->White
+	        case 0x47:  //WHITE
 	        	
-                 //-------------
-                 //white
+               
                 LAMP_GREEN_OFF();
 				LAMP_BLUE_OFF();
 			    LAMP_RED_OFF();
 				
-				TMR2_StartTimer();
-				DELAY_microseconds(200);
+			
 				FAN_OFF_FUN();
 	            lamp_t.lampColor= 0x57; //KEY_WHITE
-                lamp_t.white_pwmDuty=0;
-                 //----------------
+               
+                
 	        break;
 	        
-	        case 0x42: //"Blue"  --->Red 
+	        case 0x42: //"Blue" 
        
  
                //red
                 LAMP_GREEN_OFF();
-				LAMP_BLUE_OFF();
+				LAMP_RED_OFF();
 				LAMP_WHITE_OFF();
 		
-				TMR2_StartTimer();
-				DELAY_microseconds(200);
+		
 	           FAN_OFF_FUN();
 			
-	           lamp_t.lampColor= 0x52;
-               lamp_t.red_pwmDuty=0;
+	           lamp_t.lampColor= 0x52; //BLUE
+             
                //---------------
 	        break;
 	        
-	        case 0x57: //"White"--->blue
+	        case 0x57: //RED 
                
-	   
-                //--------------------
-                //Blue
                 LAMP_GREEN_OFF();
-			
-				LAMP_WHITE_OFF();
-				LAMP_RED_OFF();
-			   TMR2_StartTimer();
-				DELAY_microseconds(200);
+			    LAMP_WHITE_OFF();
+				LAMP_BLUE_OFF();
+		
 				FAN_OFF_FUN();
-	           lamp_t.lampColor= 0x42;
-               lamp_t.blue_pwmDuty=0;
+	             lamp_t.lampColor= 0x42;// RED
+              
 	        break;
 	        
 	      

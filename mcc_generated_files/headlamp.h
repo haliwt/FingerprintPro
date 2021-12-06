@@ -9,11 +9,11 @@
 #define LAMP_WHITE_ON()  			        do { LATAbits.LATA3 = 1; } while(0) //EDIT WHITE->BLUE
 
 
-#define LAMP_BLUE_OFF() 				  do { LATAbits.LATA4 = 0; } while(0)   //
-#define LAMP_BLUE_ON()  				  do { LATAbits.LATA4 = 1; } while(0)  //EDIT RED->WHITE
+#define LAMP_RED_OFF() 				  do { LATAbits.LATA4 = 0; } while(0)   //
+#define LAMP_RED_ON()  				  do { LATAbits.LATA4 = 1; } while(0)  //EDIT RED->WHITE
 
-#define LAMP_RED_OFF() 				         do { LATAbits.LATA6 = 0; } while(0)
-#define LAMP_RED_ON()  			            do { LATAbits.LATA6 = 1; } while(0)      //EDIT GREEN->RED
+#define LAMP_BLUE_OFF() 				         do { LATAbits.LATA6 = 0; } while(0)
+#define LAMP_BLUE_ON()  			            do { LATAbits.LATA6 = 1; } while(0)      //EDIT GREEN->RED
 
 #define LAMP_GREEN_OFF() 				  do { LATAbits.LATA7 = 0; } while(0)
 #define LAMP_GREEN_ON()  				  do { LATAbits.LATA7 = 1; } while(0) //EDIT BLUE->GREEN
@@ -21,22 +21,22 @@
 
 
 #define RED_DUTY_MAX_LEVEL                159  //50KHz //79  //80%
-#define RED_DUTY_MIN_LEVEL                39     //160*30% =48
+#define RED_DUTY_MIN_LEVEL                7     //160*30% =48
 
 
 
 
 #define GREEN_DUTY_MAX_LEVEL               159  //50KHz //70%
-#define GREEN_DUTY_MIN_LEVEL               39       //160*20%
+#define GREEN_DUTY_MIN_LEVEL               7       //160*20%
 
 
-#define WHITE_DUTY_MAX_LEVEL               159  //50KHz //60%
-#define WHITE_DUTY_MIN_LEVEL              39      //160*40%
+#define WHITE_DUTY_MAX_LEVEL              159  //50KHz //60%
+#define WHITE_DUTY_MIN_LEVEL              7      //160*40%
 
-#define BLUE_DUTY_MAX_LEVEL               79//50KHz //70%
-#define BLUE_DUTY_MIN_LEVEL               19       //160*50%
+#define BLUE_DUTY_MAX_LEVEL               159//50KHz //70%
+#define BLUE_DUTY_MIN_LEVEL               7       //160*50%
 
-#define DUTY_STEP_LEVEL                   9//19
+#define DUTY_STEP_LEVEL                   3//19
 
 #define LEVEL_DEFAULT	  14
 #define LEVEL_MIN		   2//
@@ -80,8 +80,8 @@ typedef enum{
 
 }Color;
 
-void checkMode(uint8_t value);
-void checkRun(void);
+void CheckMode(uint8_t value);
+void CheckRun(void);
 
 void LAMP_Init_Value(void);
 
