@@ -131,9 +131,7 @@ void CheckRun(void)
              LAMP_RED_OFF();
              DELAY_milliseconds(10);
               
-          
-               FAN_EN_SetHigh();//ON
-	           lamp_t.gFAN_flag=1;//FAN_ON_FUN();
+              lamp_t.gFAN_flag=1;//FAN_ON_FUN();
        
 		   break;
 #if 1
@@ -216,15 +214,15 @@ static void ADJ_LampBrightnessADD(void)
                PWM3_LoadDutyValue(lamp_t.red_pwmDuty);
                
               LAMP_RED_ON();
-             DELAY_milliseconds(4);//DELAY_milliseconds(100);
+             DELAY_milliseconds(5);//DELAY_milliseconds(100);
 			 LAMP_RED_OFF();
              DELAY_milliseconds(2);
              LAMP_RED_ON();
-             DELAY_milliseconds(4);
+             DELAY_milliseconds(5);
              LAMP_RED_OFF();
              DELAY_milliseconds(2);
-             FAN_EN_SetHigh();//ON
-	       lamp_t.gFAN_flag=1;//FAN_ON_FUN();
+             
+	         
 #endif 
 	     break;
 
@@ -330,7 +328,7 @@ static void ADJ_LampBrightnessSUB(void)
              DELAY_milliseconds(2);
              LAMP_RED_OFF();
              DELAY_milliseconds(10);
-              FAN_EN_SetHigh();//ON
+             
 #endif 		
 
 	     break;
@@ -475,8 +473,17 @@ void FUN_15MinutesTurnOff(void)
  ****************************************************************************/
 void FAN_ON_FUN(void)
 {
-    if(lamp_t.gFAN_flag==1)
+    if(lamp_t.lampWhichColor_ON_flag == Red){
+      
+        FAN_EN_SetHigh();//ON
+       
+    }
+    else if(lamp_t.gFAN_flag==1){
        FAN_EN_SetHigh();//ON
+       DELAY_milliseconds(2);
+       FAN_EN_SetLow() ; //OFF
+       DELAY_milliseconds(2);
+    }
     else 
        FAN_EN_SetLow() ; //OFF
 }

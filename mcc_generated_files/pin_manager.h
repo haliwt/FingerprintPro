@@ -152,7 +152,7 @@
 #define MP3428A_EN_WPU                  WPUBbits.WPUB1
 #define MP3428A_EN_OD                   ODCONBbits.ODCB1
 #define MP3428A_EN_ANS                  ANSELBbits.ANSELB1
-#define MP3428A_DISABLE_SetHigh()            do { LATBbits.LATB1 = 1; } while(0)
+#define MP3428A_EN_SetHigh()            do { LATBbits.LATB1 = 1; } while(0)
 #define MP3428A_EN_SetLow()             do { LATBbits.LATB1 = 0; } while(0)
 #define MP3428A_EN_Toggle()             do { LATBbits.LATB1 = ~LATBbits.LATB1; } while(0)
 #define MP3428A_EN_GetValue()           PORTBbits.RB1
