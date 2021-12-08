@@ -5,19 +5,19 @@
 
 //#define LAMP_BLUE_OFF() 				    do { LATAbits.LATA3 = 0; } while(0)
 //#define LAMP_BLUE_ON()  			        do { LATAbits.LATA3 = 1; } while(0) //EDIT WHITE->BLUE
-#define LAMP_WHITE_OFF() 				    do { LATAbits.LATA3 = 0; } while(0)
-#define LAMP_WHITE_ON()  			        do { LATAbits.LATA3 = 1; } while(0) //EDIT WHITE->BLUE
+#define LAMP_WHITE_OFF() 				    do { LATAbits.LATA7 = 0; } while(0)
+#define LAMP_WHITE_ON()  			        do { LATAbits.LATA7 = 1; } while(0) //EDIT WHITE->BLUE
 
 
-#define LAMP_RED_OFF() 				  do { LATAbits.LATA4 = 0; } while(0)   //
-#define LAMP_RED_ON()  				  do { LATAbits.LATA4 = 1; } while(0)  //EDIT RED->WHITE
 
 #define LAMP_BLUE_OFF() 				         do { LATAbits.LATA6 = 0; } while(0)
 #define LAMP_BLUE_ON()  			            do { LATAbits.LATA6 = 1; } while(0)      //EDIT GREEN->RED
 
-#define LAMP_GREEN_OFF() 				  do { LATAbits.LATA7 = 0; } while(0)
-#define LAMP_GREEN_ON()  				  do { LATAbits.LATA7 = 1; } while(0) //EDIT BLUE->GREEN
+#define LAMP_GREEN_OFF() 				  do { LATAbits.LATA3 = 0; } while(0)
+#define LAMP_GREEN_ON()  				  do { LATAbits.LATA3 = 1; } while(0) //EDIT BLUE->GREEN
 
+#define LAMP_RED_OFF() 				  do { LATAbits.LATA4 = 0; } while(0)   //
+#define LAMP_RED_ON()  				  do { LATAbits.LATA4 = 1; } while(0)  //EDIT RED->WHITE
 
 
 #define RED_DUTY_MAX_LEVEL                159  //50KHz //79  //80%
