@@ -20,7 +20,7 @@
 #define LAMP_RED_ON()  				  do { LATAbits.LATA4 = 1; } while(0)  //EDIT RED->WHITE
 
 
-#define RED_DUTY_MAX_LEVEL                159  //50KHz //79  //80%
+#define RED_DUTY_MAX_LEVEL                127  //50KHz //79  //80%
 #define RED_DUTY_MIN_LEVEL                7     //160*30% =48
 
 
