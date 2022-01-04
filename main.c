@@ -49,7 +49,7 @@ void main(void)
     while (1)
     {
      
-	  EUSART_SetRxInterruptHandler(RxData_EUSART);
+	    EUSART_SetRxInterruptHandler(RxData_EUSART);
       EUSART_InputCmd_Run();
       CheckRun();
       FAN_ON_FUN();
